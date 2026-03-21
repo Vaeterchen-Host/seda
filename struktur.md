@@ -1,5 +1,7 @@
 # Projektstruktur
 
+> Dieses File ist nahezu vollständig KI-generiert.
+
 Diese Ordnerstruktur soll das Projekt uebersichtlicher machen. Nicht jeder Ordner muss sofort voll sein. Wichtig ist vor allem, dass Dateien an einem sinnvollen Ort liegen.
 
 ## Ordner im Projekt
@@ -66,6 +68,31 @@ Dieser Ordner ist fuer Probe-Code, Experimente oder kleine Beispiele gedacht.
 Kurz gesagt:
 Alles, was **nicht zum eigentlichen Hauptprogramm gehoert**, kann hier hinein.
 
+## Wichtige Dateien im Hauptordner
+
+### `main.py`
+Diese Datei ist der Startpunkt des Programms.
+
+Hier kann spaeter zum Beispiel stehen:
+- Programmstart
+- erste Initialisierung
+- Datenbankverbindung aufbauen
+- Benutzeroberflaeche starten
+
+Kurz gesagt:
+In `main.py` beginnt das Programm.
+
+### `config.py`
+Diese Datei enthaelt zentrale Einstellungen des Programms.
+
+Beispiele:
+- Pfad zur Datenbank
+- Dateinamen
+- allgemeine Konstanten
+
+Kurz gesagt:
+In `config.py` stehen Einstellungen, die an mehreren Stellen gebraucht werden.
+
 ## Was ist `.gitignore`?
 
 Die Datei `.gitignore` sagt Git, welche Dateien oder Ordner **nicht mit versioniert werden sollen**.
@@ -87,9 +114,12 @@ Wichtig:
 
 Im Moment koennte man eure Dateien ungefaehr so einordnen:
 
-- `tk_reader.py` passt wahrscheinlich nach `ui/`
-- `buchungssystem.py` passt wahrscheinlich nach `model/` oder spaeter in eine Logik-Datei
-- `Beispiele/` bleibt als eigener Beispielordner bestehen
+- `main.py` bleibt im Hauptordner und startet das Programm
+- `config.py` bleibt im Hauptordner und speichert zentrale Einstellungen wie den Datenbankpfad
+- `classes.py` passt nach `model/`
+- `database.py` kann in `model/` bleiben oder spaeter in eine eigene Datei fuer Datenbanklogik ausgelagert werden
+- `database.db` passt nach `data/`
+- `Beispiele/` bleibt als eigener Beispielordner bestehen (nicht sichtbar, da in .gitignore)
 
 ## Einfacher Merksatz
 
@@ -98,3 +128,5 @@ Im Moment koennte man eure Dateien ungefaehr so einordnen:
 - `data` = Welche Dateien benutzt das Programm?
 - `tests` = Wie pruefen wir, ob es richtig funktioniert?
 - `docs` = Was muessen wir dazu festhalten?
+- `main.py` = Wo startet das Programm?
+- `config.py` = Wo stehen zentrale Einstellungen?
