@@ -2,9 +2,6 @@
 
 # All classes about food.
 
-# Self is used for type hinting when a class references itself.
-from typing import Self  # do i need t
-
 
 class NutrientSummary:
     """This class defines the nutrient summary of a food."""
@@ -36,11 +33,11 @@ class NutrientSummary:
 class Food:
     """This class defines the food."""
 
-    def __init__(self, id, name, type, nutrients_per_100g: NutrientSummary):
+    def __init__(self, food_id, name, food_type, nutrients_per_100g: NutrientSummary):
         """This is the constructor of Food."""
-        self._id = id
+        self._id = food_id
         self._name = name
-        self._type = type
+        self._type = food_type
         self._nutrients_per_100g = nutrients_per_100g
 
 
@@ -56,9 +53,9 @@ class MealItem:
 class Meal:
     """This class defines the meal."""
 
-    def __init__(self, id, name, items: list[MealItem]):
+    def __init__(self, meal_id, name, items: list[MealItem]):
         """This is the constructor of Meal."""
-        self._id = id
+        self._id = meal_id
         self._name = name
         self._items = items
 
@@ -69,9 +66,9 @@ class Meal:
 class FoodLog:
     """This class defines the food log."""
 
-    def __init__(self, id, food, amount_in_gramm, timestamp):
+    def __init__(self, food_log_id, food, amount_in_gramm, timestamp):
         """This is the constructor of FoodLog."""
-        self._id = id
+        self._id = food_log_id
         self._food = food
         self._amount_in_gramm = amount_in_gramm
         self._timestamp = timestamp
@@ -80,9 +77,9 @@ class FoodLog:
 class MealLog:
     """This class defines the meal log."""
 
-    def __init__(self, id, meal, amount_in_gramm, timestamp):
+    def __init__(self, meal_log_id, meal, amount_in_gramm, timestamp):
         """This is the constructor of MealLog."""
-        self._id = id
+        self._id = meal_log_id
         self._meal = meal
         self._amount_in_gramm = amount_in_gramm
         self._timestamp = timestamp
@@ -91,9 +88,9 @@ class MealLog:
 class WaterLog:
     """This class defines the water log."""
 
-    def __init__(self, id, amount_in_ml, timestamp):
+    def __init__(self, water_log_id, amount_in_ml, timestamp):
         """This is the constructor of WaterLog."""
-        self._id = id
+        self._id = water_log_id
         self._amount_in_ml = amount_in_ml
         self._timestamp = timestamp
 
@@ -101,9 +98,9 @@ class WaterLog:
 class WeightLog:
     """This class defines weightlog."""
 
-    def __init__(self, id, weight_in_kg, timestamp):
+    def __init__(self, weight_log_id, weight_in_kg, timestamp):
         """This is the constructor of weightlog."""
-        self._id = id
+        self._id = weight_log_id
         self._weight_in_kg = weight_in_kg
         self._timestamp = timestamp
 
@@ -116,7 +113,7 @@ class User:
 
     def __init__(
         self,
-        id,
+        user_id,
         name,
         birthdate,
         height_in_cm,
@@ -128,7 +125,7 @@ class User:
         meal: list[MealLog],
     ):
         """This is the constructor of User."""
-        self._id = id
+        self._id = user_id
         self._name = name
         self._birthdate = birthdate
         self._height_in_cm = height_in_cm

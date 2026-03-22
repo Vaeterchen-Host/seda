@@ -20,8 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "data" / "database.db"
 
 # -----------------------------
-
 # This content ist not AI-generated.
+DB_TEST_PATH = BASE_DIR / "tests" / "test.db"
+
 if __name__ == "__main__":
     print(f"Database path is set to: {DB_PATH}")
     print(f"Base directory is: {BASE_DIR}")
+    print(f"test.db is in: {DB_TEST_PATH}")
