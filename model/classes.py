@@ -266,7 +266,7 @@ class User:
 
     def __init__(
         self,
-        id,
+        id=None,
         name,
         birthdate,
         height_in_cm,
@@ -278,7 +278,7 @@ class User:
         meal: list[MealLog],
     ):
         """This is the constructor of User."""
-        self._id = None
+        self._id = id
         self._name = name
         self._birthdate = birthdate
         self._height_in_cm = height_in_cm

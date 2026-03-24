@@ -38,7 +38,7 @@ def weight_log():
 def tobias():
     """Create a fresh user object for each test."""
     return User(
-        "Test", "2000-02-22", 185, "m", "beginner", [water_log], [weight_log], [], []
+        None, "Test", "2000-02-22", 185, "m", "beginner", [water_log], [weight_log], [], []
     )
 
 # Tests for waterlog_class

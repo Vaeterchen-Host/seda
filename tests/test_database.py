@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from model.database import Database
-import model.classes
+from model.classes import User
 
 # pylint: skip-file
 
@@ -27,8 +27,8 @@ def db():
 @pytest.fixture
 def tobias():
     """Create a fresh user object for each test."""
-    return model.classes.User(
-        "Test", "2000-02-22", 185, "m", "beginner", [], [], [], []
+    return User(
+        None ,"Test", "2000-02-22", 185, "m", "beginner", [], [], [], []
     )
 
 
