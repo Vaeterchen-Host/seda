@@ -28,7 +28,7 @@ def main(page: ft.Page):
         "Mein Ernährungs-Tracker", 
         size=32, 
         weight=ft.FontWeight.BOLD, 
-        color=ft.colors.BLUE_GREY_900
+        color=ft.Colors.BLUE_GREY_900
     )
 
     # Statistik-Karte
@@ -40,7 +40,7 @@ def main(page: ft.Page):
                 ft.Text(
                     f"Heute konsumiert: {gesamt_kalorien} kcal", 
                     size=24, 
-                    color=ft.colors.GREEN_700,
+                    color=ft.Colors.GREEN_700,
                     weight=ft.FontWeight.BOLD
                 ),
             ]),
@@ -59,7 +59,7 @@ def main(page: ft.Page):
                         from_y=0,
                         to_y=val,
                         width=40,
-                        color=ft.colors.GREEN_400,
+                        color=ft.Colors.GREEN_400,
                         border_radius=5,
                     )
                 ],
@@ -81,18 +81,18 @@ def main(page: ft.Page):
             ft.Text("Kalorien nach Mahlzeit", size=18, weight=ft.FontWeight.BOLD),
             ft.Container(chart, height=300, padding=10)
         ]),
-        bgcolor=ft.colors.WHITE,
+        bgcolor=ft.Colors.WHITE,
         padding=20,
         border_radius=10,
-        shadow=ft.BoxShadow(blur_radius=10, color=ft.colors.BLACK12)
+        shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.BLACK12)
     )
 
     # Layout zur Seite hinzufügen
     page.add(
         header,
-        ft.VerticalDivider(height=10, color=ft.colors.TRANSPARENT),
+        ft.VerticalDivider(height=10, color=ft.Colors.TRANSPARENT),
         stats_card,
-        ft.VerticalDivider(height=20, color=ft.colors.TRANSPARENT),
+        ft.VerticalDivider(height=20, color=ft.Colors.TRANSPARENT),
         chart_container
     )
 
