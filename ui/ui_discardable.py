@@ -1,100 +1,69 @@
 #this file is only for testing purposes and can be discarded 
 
-#ai generated example to display a dashboar d with matplotlib in tkinter
+#ai generated example to display a dashboard with Flet 
 
 import flet as ft
 
 def main(page: ft.Page):
-    page.title = "Health Dashboard 2026"
-    page.window_width = 800
-    page.window_height = 800
-    page.theme_mode = ft.ThemeMode.LIGHT
+    # main window
+    page.title = "seda - version 0.1."
+    page.bgcolor = "#f4f4f9"
     page.padding = 30
-    page.bgcolor = "#f0f0f0"
 
     # --- Daten ---
     daten = [
         ("Frühstück", 450),
         ("Mittag", 750),
         ("Snack", 200),
-        ("Abendessen", 600),
+        ("Abendessen", 600)
     ]
     gesamt_kalorien = sum(d[1] for d in daten)
 
-    # --- Komponenten ---
+    # --- UI Komponenten ---
 
-    # Header
-    header = ft.Text(
-        "Mein Ernährungs-Tracker", 
-        size=32, 
-        weight=ft.FontWeight.BOLD, 
-        color=ft.colors.BLUE_GREY_900
-    )
+    # Überschrift 
+    header = ft.Text("seda - version 0.1.", size=32, weight="bold")
 
-    # Statistik-Karte
-    stats_card = ft.Card(
-        content=ft.Container(
-            content=ft.Column([
-                ft.Text("Übersicht", size=20, weight=ft.FontWeight.W_500),
-                ft.Divider(),
-                ft.Text(
-                    f"Heute konsumiert: {gesamt_kalorien} kcal", 
-                    size=24, 
-                    color=ft.colors.GREEN_700,
-                    weight=ft.FontWeight.BOLD
-                ),
-            ]),
-            padding=20,
-        ),
-        elevation=2,
-    )
-
-    # Diagramm (Barchart)
-    chart = ft.BarChart(
-        bar_groups=[
-            ft.BarChartGroup(
-                x=i,
-                bar_rods=[
-                    ft.BarChartRod(
-                        from_y=0,
-                        to_y=val,
-                        width=40,
-                        color=ft.colors.GREEN_400,
-                        border_radius=5,
-                    )
-                ],
-            ) for i, (label, val) in enumerate(daten)
-        ],
-        bottom_axis=ft.ChartAxis(
-            labels=[
-                ft.ChartAxisLabel(value=i, label=ft.Text(label)) 
-                for i, (label, val) in enumerate(daten)
-            ]
-        ),
-        left_axis=ft.ChartAxis(title=ft.Text("kcal"), labels_size=40),
-        max_y=1000,
-        expand=True,
-    )
-
-    chart_container = ft.Container(
-        content=ft.Column([
-            ft.Text("Kalorien nach Mahlzeit", size=18, weight=ft.FontWeight.BOLD),
-            ft.Container(chart, height=300, padding=10)
-        ]),
-        bgcolor=ft.colors.WHITE,
+    # Statistik-Anzeige
+    stats = ft.Container(
         padding=20,
+        bgcolor="white",
         border_radius=10,
-        shadow=ft.BoxShadow(blur_radius=10, color=ft.colors.BLACK12)
+        content=ft.Text(f"Heute: {gesamt_kalorien} kcal", size=24, color="green", weight="bold")
     )
 
-    # Layout zur Seite hinzufügen
+    # Balken-Diagramm
+    balken_reihe = ft.Row(alignment="spaceEvenly", vertical_alignment="end")
+    
+    for label, wert in daten:
+        # Wir bauen die Balken ganz simpel
+        hoehe = (wert / 1000) * 200
+        balken_reihe.controls.append(
+            ft.Column([
+                ft.Container(
+                    width=50,
+                    height=hoehe,
+                    bgcolor="blue", # Blau ist immer sicher
+                    border_radius=5
+                ),
+                ft.Text(label)
+            ], horizontal_alignment="center")
+        )
+
+    # Layout zusammenfügen
     page.add(
         header,
-        ft.VerticalDivider(height=10, color=ft.colors.TRANSPARENT),
-        stats_card,
-        ft.VerticalDivider(height=20, color=ft.colors.TRANSPARENT),
-        chart_container
+        ft.Container(height=20),
+        stats,
+        ft.Container(height=20),
+        ft.Text("Kalorien nach Mahlzeit", size=18, weight="bold"),
+        ft.Container(content=balken_reihe, padding=20, bgcolor="white", border_radius=10)
     )
 
+#if __name__ == "__main__":
+    #ft.app(target=main)
+
+
 if __name__ == "__main__":
-    ft.app(target=main)
+# Öffnet die App direkt in deinem Standard-Browser (Safari/Chrome/etc.)
+    ft.app(target=main, view=ft.AppView.WEB_BROWSER)
