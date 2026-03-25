@@ -64,7 +64,7 @@ BUGS = [
     {
         "id": "BUG-008",
         "title": "Daily water intake calculator missing",
-        "status": "idea",
+        "status": "closed",
         "priority": "high",
         "area": "future feature",
         "notes": "This is more of a future feature than a bug.",
