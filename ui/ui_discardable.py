@@ -1,28 +1,33 @@
 #this file is only for testing purposes and can be discarded 
 
-#ai generated example to display a dashboar d with matplotlib in tkinter
+#ai generated example to display a dashboard with Flet 
 
 import flet as ft
 
 def main(page: ft.Page):
-    page.title = "Health Dashboard 2026"
-    page.window_width = 800
-    page.window_height = 800
-    page.theme_mode = ft.ThemeMode.LIGHT
+    # main window
+    page.title = "seda - version 0.1."
+    page.bgcolor = "#f4f4f9"
     page.padding = 30
-    page.bgcolor = "#f0f0f0"
 
     # --- Daten ---
     daten = [
         ("Frühstück", 450),
         ("Mittag", 750),
         ("Snack", 200),
-        ("Abendessen", 600),
+        ("Abendessen", 600)
     ]
     gesamt_kalorien = sum(d[1] for d in daten)
 
-    # --- Komponenten ---
+    # --- UI Komponenten ---
 
+<<<<<<< HEAD
+    # Überschrift 
+    header = ft.Text("seda - version 0.1.", size=32, weight="bold")
+
+    # Statistik-Anzeige
+    stats = ft.Container(
+=======
     # Header
     header = ft.Text(
         "Mein Ernährungs-Tracker", 
@@ -82,19 +87,56 @@ def main(page: ft.Page):
             ft.Container(chart, height=300, padding=10)
         ]),
         bgcolor=ft.Colors.WHITE,
+>>>>>>> 8280f9cf4e1a104ab3d52c1e2bb86b74618c90a4
         padding=20,
+        bgcolor="white",
         border_radius=10,
+<<<<<<< HEAD
+        content=ft.Text(f"Heute: {gesamt_kalorien} kcal", size=24, color="green", weight="bold")
+=======
         shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.BLACK12)
+>>>>>>> 8280f9cf4e1a104ab3d52c1e2bb86b74618c90a4
     )
 
-    # Layout zur Seite hinzufügen
+    # Balken-Diagramm
+    balken_reihe = ft.Row(alignment="spaceEvenly", vertical_alignment="end")
+    
+    for label, wert in daten:
+        # Wir bauen die Balken ganz simpel
+        hoehe = (wert / 1000) * 200
+        balken_reihe.controls.append(
+            ft.Column([
+                ft.Container(
+                    width=50,
+                    height=hoehe,
+                    bgcolor="blue", # Blau ist immer sicher
+                    border_radius=5
+                ),
+                ft.Text(label)
+            ], horizontal_alignment="center")
+        )
+
+    # Layout zusammenfügen
     page.add(
         header,
+<<<<<<< HEAD
+        ft.Container(height=20),
+        stats,
+        ft.Container(height=20),
+        ft.Text("Kalorien nach Mahlzeit", size=18, weight="bold"),
+        ft.Container(content=balken_reihe, padding=20, bgcolor="white", border_radius=10)
+=======
         ft.VerticalDivider(height=10, color=ft.Colors.TRANSPARENT),
         stats_card,
         ft.VerticalDivider(height=20, color=ft.Colors.TRANSPARENT),
         chart_container
+>>>>>>> 8280f9cf4e1a104ab3d52c1e2bb86b74618c90a4
     )
 
+#if __name__ == "__main__":
+    #ft.app(target=main)
+
+
 if __name__ == "__main__":
-    ft.app(target=main)
+# Öffnet die App direkt in deinem Standard-Browser (Safari/Chrome/etc.)
+    ft.app(target=main, view=ft.AppView.WEB_BROWSER)
