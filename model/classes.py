@@ -123,9 +123,9 @@ class Meal:
 class FoodLog:
     """This class defines the food log."""
 
-    def __init__(self, id, food, amount_in_gram, timestamp):
+    def __init__(self, food_log_id, food, amount_in_gram, timestamp):
         """This is the constructor of FoodLog."""
-        self._id = id
+        self._id = food_log_id
         self._food = food
         self._amount_in_gram = amount_in_gram
         self._timestamp = timestamp
@@ -165,9 +165,9 @@ class FoodLog:
 class MealLog:
     """This class defines the meal log."""
 
-    def __init__(self, id, meal, amount_in_gram, timestamp):
+    def __init__(self, meal_log_id, meal, amount_in_gram, timestamp):
         """This is the constructor of MealLog."""
-        self._id = id
+        self._id = meal_log_id
         self._meal = meal
         self._amount_in_gram = amount_in_gram
         self._timestamp = timestamp
@@ -203,9 +203,9 @@ class MealLog:
 class WaterLog:
     """This class defines the water log."""
 
-    def __init__(self, id, amount_in_ml, timestamp):
+    def __init__(self, water_log_id, amount_in_ml, timestamp):
         """This is the constructor of WaterLog."""
-        self._id = id
+        self._id = water_log_id
         self.amount_in_ml = amount_in_ml  # refactored by ai
         self.timestamp = timestamp  # refactored by ai
 
@@ -228,6 +228,7 @@ class WaterLog:
     @amount_in_ml.setter
     def amount_in_ml(self, new_amount):
         """This is the setter for amount_in_ml."""
+        int(new_amount)
         if new_amount <= 0 or new_amount >= 2000:
             raise ValueError("Amount must be greater than 0 ml.")
         self._amount_in_ml = new_amount
@@ -248,9 +249,9 @@ class WaterLog:
 class WeightLog:
     """This class defines weightlog."""
 
-    def __init__(self, id, weight_in_kg, timestamp):
+    def __init__(self, weight_log_id, weight_in_kg, timestamp):
         """This is the constructor of weightlog."""
-        self._id = id
+        self._id = weight_log_id
         self.weight_in_kg = weight_in_kg  # refactored by ai
         self.timestamp = timestamp  # refactored by ai
 
@@ -436,11 +437,11 @@ class User:
             self.fitness_lvl = fitness_lvl
 
     # Here are the weight log related methods.
-    def add_weight_log(self, id, weight_in_kg, timestamp=None):
+    def add_weight_log(self, weight_log_id, weight_in_kg, timestamp=None):
         """Method for adding a weightlog."""
         if timestamp is None:
             timestamp = datetime.now().isoformat()
-        new_weight_log = WeightLog(id, weight_in_kg, timestamp)
+        new_weight_log = WeightLog(weight_log_id, weight_in_kg, timestamp)
         self._weight.append(new_weight_log)
 
     def delete_weight_log(self, weight_log_id):
@@ -464,12 +465,20 @@ class User:
         return bmi
 
     # Here are the water log related methods.
-    def add_water_log(self, id, amount_in_ml, timestamp=None):
+    def add_water_log(self,  amount_in_ml, timestamp=None):
         """Method for adding a waterlog."""
         if timestamp is None:
             timestamp = datetime.now().isoformat()
-        new_water_log = WaterLog(id, amount_in_ml, timestamp)
+        new_water_log = WaterLog(None, amount_in_ml, timestamp)
         self._water.append(new_water_log)
+
+    def show_water_logs(self):
+        """Method for showing all waterlogs. Partly AI-generated."""
+        if not self._water:
+            print("No water logs found.")
+            return
+        for log in self._water:
+            print(f"ID: {log.id}, Amount: {log.amount_in_ml} ml, Timestamp: {log.timestamp}")
 
     def delete_water_log(self, water_log_id):
         """Method for deleting a waterlog. AI-generated."""
@@ -482,11 +491,11 @@ class User:
         self._water = remaining_water_logs
 
     # Here are the food log related methods.
-    def add_food_log(self, id, food, amount_in_gram, timestamp=None):
+    def add_food_log(self, food_log_id, food, amount_in_gram, timestamp=None):
         """Method for adding a foodlog."""
         if timestamp is None:
             timestamp = datetime.now().isoformat()
-        new_food_log = FoodLog(id, food, amount_in_gram, timestamp)
+        new_food_log = FoodLog(food_log_id, food, amount_in_gram, timestamp)
         self._food.append(new_food_log)
 
     def delete_food_log(self, food_log_id):
@@ -500,11 +509,11 @@ class User:
         self._food = remaining_food_logs
 
     # Here are the meal log related methods.
-    def add_meal_log(self, id, meal, amount_in_gram, timestamp=None):
+    def add_meal_log(self, meal_log_id, meal, amount_in_gram, timestamp=None):
         """Method for adding a meallog."""
         if timestamp is None:
             timestamp = datetime.now().isoformat()
-        new_meal_log = MealLog(id, meal, amount_in_gram, timestamp)
+        new_meal_log = MealLog(meal_log_id, meal, amount_in_gram, timestamp)
         self._meal.append(new_meal_log)
 
     def delete_meal_log(self, meal_log_id):

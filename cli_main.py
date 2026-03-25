@@ -1,15 +1,16 @@
 """This module contains the cli controller functions for SEDA."""
 
-from email import message
-
-from model.classes import User, WaterLog, WeightLog
-from model.database import Database
-import ui.cli_view
-
 import sys
 from pathlib import Path
 from time import sleep
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from model import classes
+from model.classes import User, WaterLog, WeightLog
+from model.database import Database
+import ui.cli_view
+
+
 
 
 
@@ -18,10 +19,9 @@ db = Database()
 
 ui.cli_view.show_message("""
     Welcome to SEDA - Your personal fitness assistant!
-    Please follow the prompts.
                             """)
 db_connection = db.connect()
-sleep(2)
+#sleep(2)
 ui.cli_view.show_message("Connect with Database...")
 
 if db_connection is None:
@@ -37,6 +37,7 @@ if not db.get_all_users(): # pylint: disable=no-value-for-parameter
     except Exception as e:
         ui.cli_view.show_message(f"An error occurred while adding the user: {e}")
 
+
 else:
     ui.cli_view.show_message("Existing user found:")
     users = db.get_all_users() # pylint: disable=no-value-for-parameter
@@ -49,8 +50,18 @@ else:
             Gender: {user[4]}
             Fitness level: {user[5]}
         """)
-
-
+class_user = classes.User(
+    user[0],
+    user[1],
+    user[2],
+    user[3],
+    user[4],
+    user[5],
+    [],
+    [],
+    [],
+    []
+)
 
 while True:
     choice = ui.cli_view.prompt_main_menu()
