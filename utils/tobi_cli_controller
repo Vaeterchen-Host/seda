@@ -7,6 +7,7 @@ from model.classes import User, WaterLog, WeightLog # pylint: disable=import-err
 from model.database import Database # pylint: disable=import-error
 
 # Note: Prof wants to kill the array instead of a class instance.
+# I will refactor the code, so the last array will be refreshed.
 
 db = Database()
 
