@@ -5,6 +5,7 @@ from pathlib import Path
 from time import sleep
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from model import classes
 from model.classes import User, WaterLog, WeightLog
 from model.database import Database
 import ui.cli_view
@@ -49,9 +50,22 @@ else:
             Gender: {user[4]}
             Fitness level: {user[5]}
         """)
-
+class_user = classes.User(
+    user[0],
+    user[1],
+    user[2],
+    user[3],
+    user[4],
+    user[5],
+    [],
+    [],
+    [],
+    []
+)
 print(user)
-#sys.exit(0)
+# Show user information from class
+ui.cli_view.show_user_info(class_user)
+sys.exit(0)
 while True:
     choice = ui.cli_view.prompt_main_menu()
     if choice == "1":
