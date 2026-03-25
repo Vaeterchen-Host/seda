@@ -214,7 +214,7 @@ class WaterLog:
     def id(self):
         """This is the getter for id."""
         return self._id
-    
+
     @id.setter
     def id(self, new_id):
         """This is the setter for id."""
@@ -322,7 +322,7 @@ class User:
     def id(self):
         """This is the getter for id"""
         return self._id
-    
+
     @id.setter
     def id(self, new_id):
         """This is the setter for id."""
@@ -392,7 +392,7 @@ class User:
     def water_logs(self):
         """This is the getter for water logs."""
         return self._water
-    
+
     @water_logs.setter
     def water_logs(self, new_water_logs):
         """This is the setter for water logs. Partly AI-generated."""
@@ -402,17 +402,17 @@ class User:
     def weight_logs(self):
         """This is the getter for weight logs."""
         return self._weight
-    
+
     @weight_logs.setter
     def weight_logs(self, new_weight_logs):
         """This is the setter for weight logs. Partly AI-generated."""
-        self._weight = _validate_log_list(new_weight_logs, WeightLog, "Weight logs")  # refactored by ai
+        self._weight = _validate_log_list(new_weight_logs, WeightLog, "Weight logs")
 
     @property
     def food_logs(self):
         """This is the getter for food logs."""
         return self._food
-    
+
     @food_logs.setter
     def food_logs(self, new_food_logs):
         """This is the setter for food logs. Partly AI-generated."""
@@ -463,13 +463,13 @@ class User:
             print(f"ID: {log.id}, Weight: {log.weight_in_kg} kg, Timestamp: {log.timestamp}")
 
     def calculate_bmi(self):
-        """Method for calculating the BMI."""
+        """Method for calculating the BMI. Partly AI-generated."""
         if self.height_in_cm is None or not self._weight:
-            return None
+            return "BMI cannot be calculated. Please add a weight log first."
         height_in_m = self.height_in_cm / 100
         latest_weight = self._weight[-1].weight_in_kg
         bmi = latest_weight / (height_in_m**2)
-        return bmi
+        return round(bmi, 2)
 
     # Here are the water log related methods.
     def add_water_log(self,  amount_in_ml, timestamp=None):
@@ -496,6 +496,16 @@ class User:
                 remaining_water_logs.append(water_log)
 
         self._water = remaining_water_logs
+
+    def water_intake_today(self):
+        """Method for calculating the total water intake of today. Partly AI-generated."""
+        today = datetime.now().date()
+        total_intake = sum(
+            log.amount_in_ml
+            for log in self._water
+            if datetime.fromisoformat(log.timestamp).date() == today
+        )
+        return total_intake
 
     # Here are the food log related methods.
     def add_food_log(self, food_log_id, food, amount_in_gram, timestamp=None):

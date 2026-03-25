@@ -37,7 +37,7 @@ class Database:
         self.create_user_table()  # pylint: disable=no-value-for-parameter
         self.create_water_log_table()  # pylint: disable=no-value-for-parameter
         self.create_weight_log_table()  # pylint: disable=no-value-for-parameter
-    
+
     def end_connection(self, conn):
         """This method ends the connection to the database."""
         conn.close()
@@ -93,7 +93,7 @@ class Database:
         cursor.execute("DELETE FROM users WHERE user_name = ?", (name,))
         conn.commit()
         return cursor.rowcount
-    
+
     @connector
     def update_user(self, conn, user_id, name, birthdate, height_in_cm, gender, fitness_lvl):
         """This method updates a user's information in the database. Partly AI-generated."""
@@ -189,7 +189,7 @@ class Database:
         cursor.execute("SELECT * FROM weight_logs")
         rows = cursor.fetchall()
         return rows
-    
+
     @connector
     def delete_weight_log(self, conn, weight_log_id) -> int:
         """This method deletes a weight log from the database."""

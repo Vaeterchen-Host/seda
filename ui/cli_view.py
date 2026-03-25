@@ -40,11 +40,11 @@ def create_user_by_input():
     while True:
         try:
             height_in_cm = int(input("Enter your height in cm: "))
-            if height_in_cm <= 0 or height_in_cm > 250:
-                raise ValueError("Height must be between 1 and 250 cm.")
+            if height_in_cm <= 50 or height_in_cm > 250:
+                raise ValueError("Height must be between 50 and 250 cm.")
             break
         except ValueError as e:
-            print(f"Invalid input: {e}")
+            print(f"Invalid input: {e}" + "\nPlease enter a valid height in cm.")
     while True:
         gender = input("Enter your gender (m/f/d): ")
         # ai generated. strip removes leading and trailing whitespaces.
@@ -71,17 +71,30 @@ def show_user_info_from_class(user):
 def change_user_information(user):
     """Change the user's information by asking for input."""
     print("Change User Information. If you want to keep the current value, just press Enter.")
-    name = input(f"Enter your name. Currently: ({user.name}): ") or user.name
-    birthdate = input(f"Enter your birthdate (YYYY-MM-DD). Currently: ({user.birthdate}): ") or user.birthdate
+    try:
+        birthdate = input(f"Enter your birthdate (YYYY-MM-DD). Currently: ({user.birthdate}): ") or user.birthdate
+        datetime.strptime(birthdate, "%Y-%m-%d") # Validate the date format
+    except ValueError:
+        print("Invalid input for birthdate. Keeping the current value.")
+        birthdate = user.birthdate
     height_in_cm_input = input(f"Enter your height in cm. Currently: ({user.height_in_cm}): ") or str(user.height_in_cm)
     try:
-        height_in_cm = int(height_in_cm_input)    
+        height_in_cm = int(height_in_cm_input)
+        if height_in_cm <= 50 or height_in_cm > 250:
+            raise ValueError("Height must be between 50 and 250 cm.")
     except ValueError:
         print("Invalid input for height. Keeping the current value.")
         height_in_cm = user.height_in_cm
     gender = input(f"Enter your gender (m/f/d). Currently: ({user.gender}): ") or user.gender
+    if not {'m', 'f', 'd'}.intersection({gender.lower()}):
+        print("Invalid input for gender. Keeping the current value.")
+        gender = user.gender
+
     fitness_lvl = input(f"Enter your fitness level (beginner/intermediate/advanced). Currently: ({user.fitness_lvl}): ") or user.fitness_lvl
-    return name, birthdate, height_in_cm, gender, fitness_lvl
+    if not {'beginner', 'intermediate', 'advanced'}.intersection({fitness_lvl.lower()}):
+        print("Invalid input for fitness level. Keeping the current value.")
+        fitness_lvl = user.fitness_lvl
+    return birthdate, height_in_cm, gender, fitness_lvl
 
 
 # Water log related functions
@@ -98,13 +111,16 @@ def create_water_log_parameters_by_input():
                 raise ValueError("Amount must be between 1 and 2000 ml.")
             break
         except ValueError as e:
-            print(e)
+            print(f"Invalid input: {e}" + 
+                  "\nPlease enter a valid amount between 1 and 2000 ml.")
     while True:
         try:
             timestamp = input("Enter the timestamp (YYYY-MM-DDTHH:MM) or nothing for current time: ")
             break
         except ValueError as e:
-            print(f"Invalid input: {e}")
+            print(f"Invalid input: {e}" + 
+                  "\nPlease enter a valid timestamp in the format YYYY-MM-DDTHH:MM"
+                  " or leave it empty for the current time.")
     if not timestamp:
         timestamp = None
     return amount_in_ml, timestamp
@@ -155,7 +171,7 @@ def prompt_main_menu():
         What would you like to do?
         1. Show user information
         2. All about water logs:
-        3. All about weight logs:
+        3. All about weight log
         4. Change user information
         5. Exit
                                 """)
@@ -168,9 +184,10 @@ def prompt_water_log_menu():
         1. Add a water log
         2. Show all water logs
         3. Delete a water log
-        4. Back to main menu
+        4. Show today's water intake
+        5. Back to main menu
                                 """)
-    return input("Enter your choice (1-4): ")
+    return input("Enter your choice (1-5): ")
 
 def prompt_weight_log_menu():
     """Show the weight log menu and handle user input."""
@@ -179,6 +196,7 @@ def prompt_weight_log_menu():
         1. Add a weight log
         2. Show all weight logs
         3. Delete a weight log
-        4. Back to main menu
+        4. Calculate BMI.
+        5. Back to main menu
                                 """)
-    return input("Enter your choice (1-4): ")
+    return input("Enter your choice (1-5): ")

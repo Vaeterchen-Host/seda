@@ -25,9 +25,9 @@ ui.cli_view.show_message("Connected with Database.")
 
 if not db.get_all_users(): # pylint: disable=no-value-for-parameter
     ui.cli_view.show_message("No users found. Let's create a new user.")
-    user = ui.cli_view.create_user_by_input()
+    initial_user = ui.cli_view.create_user_by_input()
     try:
-        db.add_user(user.name, user.birthdate, user.height_in_cm, user.gender, user.fitness_lvl) # pylint: disable=no-value-for-parameter, disable=line-too-long
+        db.add_user(initial_user.name, initial_user.birthdate, initial_user.height_in_cm, initial_user.gender, initial_user.fitness_lvl) # pylint: disable=no-value-for-parameter, disable=line-too-long
     except Exception as e: # pylint: disable=broad-exception-caught
         ui.cli_view.show_message(f"An error occurred while adding the user: {e}")
 
@@ -35,14 +35,14 @@ if not db.get_all_users(): # pylint: disable=no-value-for-parameter
 else:
     ui.cli_view.show_message("Existing user found:")
     users = db.get_all_users() # pylint: disable=no-value-for-parameter
-    for user in users:
+    for db_user in users:
         ui.cli_view.show_message(f"""
-            ID: {user[0]}
-            Name: {user[1]}
-            Birthdate: {user[2]}
-            Height: {user[3]} cm
-            Gender: {user[4]}
-            Fitness level: {user[5]}
+            ID: {db_user[0]}
+            Name: {db_user[1]}
+            Birthdate: {db_user[2]}
+            Height: {db_user[3]} cm
+            Gender: {db_user[4]}
+            Fitness level: {db_user[5]}
         """)
 #Create an array of WaterLog instances for the user
 def create_water_log_instances_for_user():
@@ -68,12 +68,12 @@ def create_user_instance_from_db():
     water_logs = create_water_log_instances_for_user()
     weight_logs = create_weight_log_instances_for_user()
     function_class_user = User(
-        user[0], # id
-        user[1], # name
-        user[2], # birthdate
-        user[3], # height_in_cm
-        user[4], # gender
-        user[5], # fitness_lvl
+        db_user[0], # id
+        db_user[1], # name
+        db_user[2], # birthdate
+        db_user[3], # height_in_cm
+        db_user[4], # gender
+        db_user[5], # fitness_lvl
         water_logs, # water_logs
         weight_logs, # weight_logs
         [], # sleep_logs
@@ -81,7 +81,11 @@ def create_user_instance_from_db():
     )
     return function_class_user
 
-class_user = create_user_instance_from_db()
+# Create the user instance for the class
+if not initial_user:
+    class_user = create_user_instance_from_db()
+else:
+    class_user = initial_user
 
 # Refresher functions
 # def refresh_user_data_from_db():
@@ -102,15 +106,17 @@ def show_user_information():
     """This function shows the user's information."""
     ui.cli_view.show_user_info_from_class(class_user)
 
-def change_user_information():
+def update_biometrical_information():
     """This function changes the user's information."""
-    name, birthdate, height_in_cm, gender, fitness_lvl = ui.cli_view.change_user_information(class_user) # pylint: disable=E1111
+    birthdate, height_in_cm, gender, fitness_lvl = ui.cli_view.change_user_information(class_user) # pylint: disable=E1111
     class_user.update_biometrical_data(birthdate=birthdate,
                                        height_in_cm=height_in_cm,
                                        gender=gender,
                                        fitness_lvl=fitness_lvl
                                        )
-    db.update_user(class_user.id, name, birthdate, height_in_cm, gender, fitness_lvl) # pylint: disable=no-value-for-parameter, disable=line-too-long
+    db.update_user(class_user.id, class_user.name, birthdate, height_in_cm, gender, fitness_lvl) # pylint: disable=no-value-for-parameter, disable=line-too-long
+    print("\nUser information updated successfully!\n")
+    show_user_information()
 
 # waterlog functions
 def add_water_log():
@@ -202,7 +208,7 @@ while True:
             else:
                 ui.cli_view.show_message("Invalid choice. Please try again.")
     elif choice == "4":
-        ui.cli_view.change_user_information(class_user) # pylint: disable=E1111
+        update_biometrical_information()
     elif choice == "5":
         ui.cli_view.show_message("Exiting the program. Goodbye!")
         db.end_connection(db_connection) # pylint: disable=no-value-for-parameter
