@@ -1,4 +1,8 @@
-"""This module contains the cli view functions for SEDA."""
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
+
+"""CLI view functions for SEDA."""
 
 import sys
 from pathlib import Path
@@ -24,6 +28,18 @@ def prompt_log_id():
             "\nReturning to the previous menu."
         )
         return None
+
+
+def show_license():
+    """Show the project license text. AI-generated content."""
+    license_path = Path(__file__).resolve().parents[1] / "LICENSE.md"
+    if not license_path.exists():
+        print("LICENSE.md not found.")
+        return
+
+    print("\n--- LICENSE ---\n")
+    print(license_path.read_text(encoding="utf-8"))
+    print("\n--- END OF LICENSE ---\n")
 
 
 # User related functions
@@ -229,9 +245,10 @@ def prompt_main_menu():
         3. All about weight log:
         4. Change user information
         5. Exit
+        9. Show License
                                 """
     )
-    return input("Enter your choice (1-5): ")
+    return input("Enter your choice (1-9): ")
 
 
 def prompt_water_log_menu():

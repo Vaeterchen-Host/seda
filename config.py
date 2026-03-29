@@ -1,4 +1,8 @@
-"""This is the config file of the project."""
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
+
+"""Project configuration for SEDA."""
 
 # By using this configfile, we can easily change the database path.
 # Other wise we need to write the path in everyfile where we need it.

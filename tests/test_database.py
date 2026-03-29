@@ -1,4 +1,8 @@
-"""This is a test file for the database module."""
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
+
+"""Tests for the SEDA database layer."""
 
 import uuid
 from pathlib import Path
@@ -27,9 +31,7 @@ def db():
 @pytest.fixture
 def tobias():
     """Create a fresh user object for each test."""
-    return User(
-        None ,"Test", "2000-02-22", 185, "m", "beginner", [], [], [], []
-    )
+    return User(None, "Test", "2000-02-22", 185, "m", "beginner", [], [], [], [])
 
 
 # AI-generated content end

@@ -1,6 +1,11 @@
-"""This file defines classes"""
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
+
+"""Core domain classes for SEDA."""
 
 from datetime import datetime
+
 
 # ai-generated content start: helper function for validating log lists.
 def _validate_log_list(logs, log_type, label):
@@ -396,7 +401,9 @@ class User:
     @water_logs.setter
     def water_logs(self, new_water_logs):
         """This is the setter for water logs. Partly AI-generated."""
-        self._water = _validate_log_list(new_water_logs, WaterLog, "Water logs")  # refactored by ai
+        self._water = _validate_log_list(
+            new_water_logs, WaterLog, "Water logs"
+        )  # refactored by ai
 
     @property
     def weight_logs(self):
@@ -416,7 +423,9 @@ class User:
     @food_logs.setter
     def food_logs(self, new_food_logs):
         """This is the setter for food logs. Partly AI-generated."""
-        self._food = _validate_log_list(new_food_logs, FoodLog, "Food logs")  # refactored by ai
+        self._food = _validate_log_list(
+            new_food_logs, FoodLog, "Food logs"
+        )  # refactored by ai
 
     @property
     def meal_logs(self):
@@ -460,7 +469,9 @@ class User:
             print("No weight logs found.")
             return
         for log in self._weight:
-            print(f"ID: {log.id}, Weight: {log.weight_in_kg} kg, Timestamp: {log.timestamp}")
+            print(
+                f"ID: {log.id}, Weight: {log.weight_in_kg} kg, Timestamp: {log.timestamp}"
+            )
 
     def calculate_bmi(self):
         """Method for calculating the BMI. Partly AI-generated."""
@@ -472,7 +483,7 @@ class User:
         return round(bmi, 2)
 
     # Here are the water log related methods.
-    def add_water_log(self,  amount_in_ml, timestamp=None):
+    def add_water_log(self, amount_in_ml, timestamp=None):
         """Method for adding a waterlog."""
         if timestamp is None:
             timestamp = datetime.now().isoformat()
@@ -485,7 +496,9 @@ class User:
             print("No water logs found.")
             return
         for log in self._water:
-            print(f"ID: {log.id}, Amount: {log.amount_in_ml} ml, Timestamp: {log.timestamp}")
+            print(
+                f"ID: {log.id}, Amount: {log.amount_in_ml} ml, Timestamp: {log.timestamp}"
+            )
 
     def delete_water_log(self, water_log_id):
         """Method for deleting a waterlog. AI-generated."""

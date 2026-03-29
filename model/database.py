@@ -1,4 +1,8 @@
-"""This module defines everything that is needed for the database."""
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
+
+"""Database layer for SEDA."""
 
 import sqlite3
 from config import DB_PATH
@@ -95,7 +99,9 @@ class Database:
         return cursor.rowcount
 
     @connector
-    def update_user(self, conn, user_id, name, birthdate, height_in_cm, gender, fitness_lvl):
+    def update_user(
+        self, conn, user_id, name, birthdate, height_in_cm, gender, fitness_lvl
+    ):
         """This method updates a user's information in the database. Partly AI-generated."""
         cursor = conn.cursor()
         cursor.execute(
@@ -104,7 +110,7 @@ class Database:
             SET user_name = ?, date_of_birth = ?, height = ?, gender = ?, fitness_lvl = ?
             WHERE user_id = ?
             """,
-            (name, birthdate, height_in_cm, gender, fitness_lvl, user_id)
+            (name, birthdate, height_in_cm, gender, fitness_lvl, user_id),
         )
         conn.commit()
 
@@ -181,7 +187,6 @@ class Database:
         )
         conn.commit()
 
-
     @connector
     def get_all_weight_logs(self, conn) -> list:
         """This method retrieves all weight logs from the database."""
@@ -194,6 +199,8 @@ class Database:
     def delete_weight_log(self, conn, weight_log_id) -> int:
         """This method deletes a weight log from the database."""
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM weight_logs WHERE weight_log_id = ?", (weight_log_id,))
+        cursor.execute(
+            "DELETE FROM weight_logs WHERE weight_log_id = ?", (weight_log_id,)
+        )
         conn.commit()
         return cursor.rowcount

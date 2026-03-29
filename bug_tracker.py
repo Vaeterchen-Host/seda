@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
+
 """Known bugs and technical debt for SEDA."""
 
 # pylint: skip-file
@@ -92,5 +96,13 @@ BUGS = [
         "priority": "low",
         "area": "ui/ui_discardable.py",
         "notes": "The file should either be removed later or marked more clearly as experimental or disposable UI code.",
+    },
+    {
+        "id": "BUG-012",
+        "title": "CLI should display long license text page by page",
+        "status": "open",
+        "priority": "low",
+        "area": "ui/cli_view.py / model/controller.py",
+        "notes": "If the GPL text is shown in the CLI, it should be paginated, for example in blocks of 25 to 30 lines with Enter to continue, instead of printing one very long block.",
     },
 ]

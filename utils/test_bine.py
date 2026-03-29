@@ -1,4 +1,8 @@
-"""This is a test file for the database module."""
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
+
+"""Utility tests for database-related SEDA code."""
 
 import uuid
 from pathlib import Path
@@ -31,9 +35,11 @@ def tobias():
         "Test", "2000-02-22", 185, "m", "beginner", [], [], [], []
     )
 
-#------------------------------------
+
+# ------------------------------------
 
 # AI-generated content end
+
 
 def test_create_weight_log_table(db):
     """Test if the weight log table is created successfully."""

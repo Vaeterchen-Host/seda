@@ -1,5 +1,7 @@
 # SEDA
 
+> This README is partly ai-generated.
+
 SEDA is a Python fitness tracking project with both a command-line interface and a graphical interface. The current codebase focuses on user data, water logs, weight logs, and a small SQLite-backed persistence layer.
 
 ## Current Features
@@ -27,14 +29,14 @@ For a more detailed overview, see [docs/de_struktur.md](/home/vaeterchen_frost/C
 
 ## Requirements
 
-The project currently stores its dependencies in `requirement.txt`.
+The project currently stores its dependencies in `requirements.txt`.
 
 Typical setup:
 
 ```bash
 python -m venv venv
 source venv/bin/activate
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 ## Running the Project
@@ -62,4 +64,7 @@ pytest
 
 - The project currently mixes active code, utilities, and older experiments.
 - `bug_tracker.py` documents known issues and technical debt.
-- Some filenames still reflect earlier project phases, for example `requirement.txt`.
+
+## Contact
+For questions or contributions, please reach out to the project maintainers [Vaeterchen_Host](https://github.com/Vaeterchen-Host) and [binerino](https://github.com/binerino).
+Pull requests and issues are welcome!

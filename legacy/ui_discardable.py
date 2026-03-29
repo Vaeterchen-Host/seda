@@ -1,6 +1,12 @@
-#this file is only for testing purposes and can be discarded 
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Tobias Mignat & Sabine Steverding
+# See LICENSE.md for the full license text.
 
-#ai generated example to display a dashboard with Flet 
+"""Discardable experimental UI code for SEDA."""
+
+# this file is only for testing purposes and can be discarded
+# pylint: disable=all
+# ai generated example to display a dashboard with Flet
 
 import flet as ft
 
@@ -21,13 +27,11 @@ def main(page: ft.Page):
 
     # --- UI Komponenten ---
 
-<<<<<<< HEAD
     # Überschrift 
     header = ft.Text("seda - version 0.1.", size=32, weight="bold")
 
     # Statistik-Anzeige
     stats = ft.Container(
-=======
     # Header
     header = ft.Text(
         "Mein Ernährungs-Tracker", 
@@ -87,15 +91,11 @@ def main(page: ft.Page):
             ft.Container(chart, height=300, padding=10)
         ]),
         bgcolor=ft.Colors.WHITE,
->>>>>>> 8280f9cf4e1a104ab3d52c1e2bb86b74618c90a4
         padding=20,
         bgcolor="white",
         border_radius=10,
-<<<<<<< HEAD
         content=ft.Text(f"Heute: {gesamt_kalorien} kcal", size=24, color="green", weight="bold")
-=======
         shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.BLACK12)
->>>>>>> 8280f9cf4e1a104ab3d52c1e2bb86b74618c90a4
     )
 
     # Balken-Diagramm
@@ -119,18 +119,15 @@ def main(page: ft.Page):
     # Layout zusammenfügen
     page.add(
         header,
-<<<<<<< HEAD
         ft.Container(height=20),
         stats,
         ft.Container(height=20),
         ft.Text("Kalorien nach Mahlzeit", size=18, weight="bold"),
         ft.Container(content=balken_reihe, padding=20, bgcolor="white", border_radius=10)
-=======
         ft.VerticalDivider(height=10, color=ft.Colors.TRANSPARENT),
         stats_card,
         ft.VerticalDivider(height=20, color=ft.Colors.TRANSPARENT),
         chart_container
->>>>>>> 8280f9cf4e1a104ab3d52c1e2bb86b74618c90a4
     )
 
 #if __name__ == "__main__":
