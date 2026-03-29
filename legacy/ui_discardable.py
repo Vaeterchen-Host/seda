@@ -31,7 +31,7 @@ def main(page: ft.Page):
     header = ft.Text("seda - version 0.1.", size=32, weight="bold")
 
     # Statistik-Anzeige
-    stats = ft.Container(
+    #stats = ft.Container(
     # Header
     header = ft.Text(
         "Mein Ernährungs-Tracker", 
@@ -94,7 +94,7 @@ def main(page: ft.Page):
         padding=20,
         bgcolor="white",
         border_radius=10,
-        content=ft.Text(f"Heute: {gesamt_kalorien} kcal", size=24, color="green", weight="bold")
+        content=ft.Text(f"Heute: {gesamt_kalorien} kcal", size=24, color="green", weight="bold"),
         shadow=ft.BoxShadow(blur_radius=10, color=ft.Colors.BLACK12)
     )
 
@@ -128,7 +128,7 @@ def main(page: ft.Page):
         stats_card,
         ft.VerticalDivider(height=20, color=ft.Colors.TRANSPARENT),
         chart_container
-    )
+        )
 
 #if __name__ == "__main__":
     #ft.app(target=main)

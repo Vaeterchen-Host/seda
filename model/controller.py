@@ -21,16 +21,7 @@ def main():
     db = Database()
     initial_user = None
 
-    ui.cli_view.show_message(
-        """
-        Welcome to SEDA - Your personal fitness assistant!
-
-                seda  Copyright (C) 2026  Tobias Mignat & Sabine Steverding
-        This program comes with ABSOLUTELY NO WARRANTY.
-        This is free software, and you are welcome to redistribute it
-        under certain conditions; type "9" for details.
-                                """
-    )
+    ui.cli_view.show_welcome()
     db_connection = db.connect()
     # sleep(2)
     ui.cli_view.show_message("Connect with Database...")
@@ -220,7 +211,7 @@ def main():
     # --------- Main menu loop - --------
 
     while True:
-        choice = ui.cli_view.prompt_main_menu()
+        choice = ui.cli_view.prompt_main_menu().lower()
         if choice == "1":
             ui.cli_view.show_user_info_from_class(class_user)  # pylint: disable=E1111
         elif choice == "2":
@@ -261,8 +252,8 @@ def main():
             ui.cli_view.show_message("Exiting the program. Goodbye!")
             db.end_connection(db_connection)  # pylint: disable=no-value-for-parameter
             sys.exit(0)
-        elif choice == "9":
-            ui.cli_view.show_license()
+        elif choice == "l":
+            ui.cli_view.show_license_long()
         else:
             ui.cli_view.show_message("Invalid choice. Please try again.")
 

@@ -1,0 +1,18 @@
+"""Utility helpers for paginated CLI output. Partly ai-generated."""
+
+
+def paginator(text, lines_per_page=30, input_fn=input, output_fn=print):
+    """Show long text in smaller CLI pages."""
+    lines = text.splitlines()
+
+    if not lines:
+        output_fn("")
+        return
+
+    for start in range(0, len(lines), lines_per_page):
+        block = lines[start : start + lines_per_page]
+        output_fn("\n".join(block))
+
+        has_next_page = start + lines_per_page < len(lines)
+        if has_next_page:
+            input_fn("Press Enter to continue...")

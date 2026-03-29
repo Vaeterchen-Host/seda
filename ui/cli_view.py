@@ -7,7 +7,9 @@
 import sys
 from pathlib import Path
 from datetime import datetime
+from config import DEVS, LICENSE_PATH
 from model.classes import User
+from utils.paginator import paginator
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -30,16 +32,28 @@ def prompt_log_id():
         return None
 
 
-def show_license():
+def show_welcome():
+    """Show a short license notice."""
+    show_message(
+        f"""
+        Welcome to SEDA - Your personal fitness assistant!
+
+                seda  Copyright (C) 2026  {DEVS}
+        This program comes with ABSOLUTELY NO WARRANTY.
+        This is free software, and you are welcome to redistribute it
+        under certain conditions.
+        Type "l" for details.\n
+                 """
+    )
+
+
+def show_license_long():
     """Show the project license text. AI-generated content."""
-    license_path = Path(__file__).resolve().parents[1] / "LICENSE.md"
-    if not license_path.exists():
+    if not LICENSE_PATH.exists():
         print("LICENSE.md not found.")
         return
 
-    print("\n--- LICENSE ---\n")
-    print(license_path.read_text(encoding="utf-8"))
-    print("\n--- END OF LICENSE ---\n")
+    paginator(LICENSE_PATH.read_text(encoding="utf-8"))  # pylint: disable=E1121
 
 
 # User related functions
@@ -245,10 +259,10 @@ def prompt_main_menu():
         3. All about weight log:
         4. Change user information
         5. Exit
-        9. Show License
+        l. Show License
                                 """
     )
-    return input("Enter your choice (1-9): ")
+    return input("Enter your choice (1-5/l): ")
 
 
 def prompt_water_log_menu():

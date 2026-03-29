@@ -4,7 +4,7 @@
 
 """Legacy German-language UI code for SEDA."""
 
-# pylint: ignore=all
+# pylint: disable=all
 # AI generated code, which has been adapted for workability purposes
 # ISSUES TO SOLVE: Bestätigung nach Änderung der biometischen Daten; Fenster für Tracking-Ergebnisse verlängern
 

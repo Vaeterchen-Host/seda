@@ -100,7 +100,7 @@ BUGS = [
     {
         "id": "BUG-012",
         "title": "CLI should display long license text page by page",
-        "status": "open",
+        "status": "closed",
         "priority": "low",
         "area": "ui/cli_view.py / model/controller.py",
         "notes": "If the GPL text is shown in the CLI, it should be paginated, for example in blocks of 25 to 30 lines with Enter to continue, instead of printing one very long block.",

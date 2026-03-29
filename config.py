@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 # This is where the SQLite database will be stored.
 DB_PATH = BASE_DIR / "data" / "database.db"
+LICENSE_PATH = BASE_DIR / "LICENSE.md"
 
 # -----------------------------
 # This content ist not AI-generated.
@@ -35,3 +36,4 @@ if __name__ == "__main__":
     print(f"Database path is set to: {DB_PATH}")
     print(f"Base directory is: {BASE_DIR}")
     print(f"test.db is in: {DB_TEST_PATH}")
+    print(f"License file is in: {LICENSE_PATH}")

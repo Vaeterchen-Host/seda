@@ -19,13 +19,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from model.classes import User, WaterLog, WeightLog
 from model.database import Database
-from config import DEVS, VERSION
+from config import DEVS, LICENSE_PATH, VERSION
 
 
 def main(page: ft.Page):
     page.title = "seda - Personal Fitness Assistant"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.padding = 20
+    license_text = (
+        LICENSE_PATH.read_text(encoding="utf-8")
+        if LICENSE_PATH.exists()
+        else "LICENSE.md not found."
+    )
 
     db = Database()
     db.connect()
@@ -317,6 +322,46 @@ def main(page: ft.Page):
         visible=False,
     )
 
+    # AI-generated content: about view with embedded license text.
+    about_view = ft.Column(
+        [
+            ft.Card(
+                content=ft.Container(
+                    padding=20,
+                    content=ft.Column(
+                        [
+                            ft.Text("About", size=25, weight="bold"),
+                            ft.Text(
+                                f"SEDA version {VERSION}",
+                                size=18,
+                                weight="bold",
+                                color="blue",
+                            ),
+                            ft.Text(f"Developed by {DEVS}"),
+                            ft.Text(
+                                "SEDA is a personal fitness assistant with tracking for water intake and weight."
+                            ),
+                            ft.Divider(),
+                            ft.Text("License", size=20, weight="bold"),
+                            ft.Container(
+                                content=ft.Column(
+                                    [ft.Text(license_text, selectable=True)],
+                                    scroll=ft.ScrollMode.AUTO,
+                                ),
+                                height=420,
+                                padding=10,
+                                border=ft.border.all(1, "grey400"),
+                                border_radius=8,
+                                bgcolor="grey50",
+                            ),
+                        ]
+                    ),
+                )
+            )
+        ],
+        visible=False,
+    )
+
     # --- NAVIGATION & DELETE LOGIC ---
 
     delete_data = {"id": None, "type": None}
@@ -361,6 +406,7 @@ def main(page: ft.Page):
         profil_view.visible = idx == 0
         wasser_view.visible = idx == 1
         gewicht_view.visible = idx == 2
+        about_view.visible = idx == 3
         page.update()
 
     menu_bar = ft.Row(
@@ -368,6 +414,7 @@ def main(page: ft.Page):
             ft.Button("Profile", on_click=lambda _: show_view(0)),
             ft.Button("Water tracker", on_click=lambda _: show_view(1)),
             ft.Button("Weight tracker", on_click=lambda _: show_view(2)),
+            ft.Button("About", on_click=lambda _: show_view(3)),
         ],
         alignment="center",
     )
@@ -380,6 +427,7 @@ def main(page: ft.Page):
         profil_view,
         wasser_view,
         gewicht_view,
+        about_view,
         ft.Divider(),
         ft.Row([version_text], alignment="center"),
     )
