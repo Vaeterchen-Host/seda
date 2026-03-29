@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import pytest
 
-from model.classes import User, WaterLog, WeightLog
+from model.classes import MealLog, User, WaterLog, WeightLog
 
 # pylint: skip-file
 
@@ -30,7 +30,7 @@ def weight_log_1():
 
 
 @pytest.fixture
-def tobias(water_log_1, weight_log_1):
+def test_user_class(water_log_1, weight_log_1):
     """Create a fresh user object for each test."""
     return User(
         None,
@@ -49,51 +49,65 @@ def tobias(water_log_1, weight_log_1):
 # Tests for waterlog_class
 
 
-def test_get_water_logs(tobias):
+def test_get_water_logs(test_user_class):
     """This test checks if the getter method retrieves correctly. Partly AI-generated content."""
-    assert len(tobias.water_logs) == 1
-    assert tobias.water_logs[0].amount_in_ml == 900
-    assert tobias.water_logs[0].timestamp == "2026-03-21T12:12"
+    assert len(test_user_class.water_logs) == 1
+    assert test_user_class.water_logs[0].amount_in_ml == 900
+    assert test_user_class.water_logs[0].timestamp == "2026-03-21T12:12"
 
 
-def test_add_water_log(tobias):
+def test_add_water_log(test_user_class):
     """This test checks if the add method adds correctly. Partly AI-generated content."""
-    tobias.add_water_log(2, 500, "2026-03-22T08:00")
-    assert len(tobias.water_logs) == 2
-    assert tobias.water_logs[1].amount_in_ml == 500
-    assert tobias.water_logs[1].timestamp == "2026-03-22T08:00"
+    test_user_class.add_water_log(500, "2026-03-22T08:00")
+    assert len(test_user_class.water_logs) == 2
+    assert test_user_class.water_logs[1].amount_in_ml == 500
+    assert test_user_class.water_logs[1].timestamp == "2026-03-22T08:00"
 
 
-def test_remove_water_log(tobias):
+def test_remove_water_log(test_user_class):
     """This test checks if the remove method removes correctly. Partly AI-generated content."""
-    tobias.add_water_log(2, 500, "2026-03-22T08:00")
-    assert len(tobias.water_logs) == 2
-    assert tobias.water_logs[1].amount_in_ml == 500
-    assert tobias.water_logs[1].timestamp == "2026-03-22T08:00"
-    tobias.delete_water_log(1)
-    assert len(tobias.water_logs) == 1
+    test_user_class.add_water_log(500, "2026-03-22T08:00")
+    assert len(test_user_class.water_logs) == 2
+    assert test_user_class.water_logs[1].amount_in_ml == 500
+    assert test_user_class.water_logs[1].timestamp == "2026-03-22T08:00"
+    test_user_class.delete_water_log(1)
+    assert len(test_user_class.water_logs) == 1
 
 
-def test_get_weight_logs(tobias):
+def test_get_weight_logs(test_user_class):
     """This test checks if the getter method retrieves correctly. Partly AI-generated content."""
-    assert len(tobias.weight_logs) == 1
-    assert tobias.weight_logs[0].weight_in_kg == 80.5
-    assert tobias.weight_logs[0].timestamp == "2026-03-21T12:12"
+    assert len(test_user_class.weight_logs) == 1
+    assert test_user_class.weight_logs[0].weight_in_kg == 80.5
+    assert test_user_class.weight_logs[0].timestamp == "2026-03-21T12:12"
 
 
-def test_add_weight_log(tobias):
+def test_add_weight_log(test_user_class):
     """This test checks if the add method adds correctly. Partly AI-generated content."""
-    tobias.add_weight_log(2, 79.8, "2026-03-22T08:00")
-    assert len(tobias.weight_logs) == 2
-    assert tobias.weight_logs[1].weight_in_kg == 79.8
-    assert tobias.weight_logs[1].timestamp == "2026-03-22T08:00"
+    test_user_class.add_weight_log(79.8, "2026-03-22T08:00")
+    assert len(test_user_class.weight_logs) == 2
+    assert test_user_class.weight_logs[1].weight_in_kg == 79.8
+    assert test_user_class.weight_logs[1].timestamp == "2026-03-22T08:00"
 
 
-def test_remove_weight_log(tobias):
+def test_remove_weight_log(test_user_class):
     """This test checks if the remove method removes correctly. Partly AI-generated content."""
-    tobias.add_weight_log(2, 79.8, "2026-03-22T08:00")
-    assert len(tobias.weight_logs) == 2
-    assert tobias.weight_logs[1].weight_in_kg == 79.8
-    assert tobias.weight_logs[1].timestamp == "2026-03-22T08:00"
-    tobias.delete_weight_log(1)
-    assert len(tobias.weight_logs) == 1
+    test_user_class.add_weight_log(79.8, "2026-03-22T08:00")
+    assert len(test_user_class.weight_logs) == 2
+    assert test_user_class.weight_logs[1].weight_in_kg == 79.8
+    assert test_user_class.weight_logs[1].timestamp == "2026-03-22T08:00"
+    test_user_class.delete_weight_log(1)
+    assert len(test_user_class.weight_logs) == 1
+
+
+def test_set_meal_logs(test_user_class):
+    """This test checks if meal logs can be set correctly."""
+    meal_log = MealLog(1, None, 250, "2026-03-22T12:00")
+    test_user_class.meal_logs = [meal_log]
+    assert len(test_user_class.meal_logs) == 1
+    assert test_user_class.meal_logs[0].id == 1
+
+
+def test_set_invalid_meal_logs_raises_value_error(test_user_class):
+    """This test checks if invalid meal logs are rejected."""
+    with pytest.raises(ValueError):
+        test_user_class.meal_logs = ["not a meal log"]

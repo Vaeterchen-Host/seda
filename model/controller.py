@@ -128,9 +128,10 @@ def main():
 
     def update_biometrical_information():
         """This function changes the user's information."""
-        birthdate, height_in_cm, gender, fitness_lvl = (
+        name, birthdate, height_in_cm, gender, fitness_lvl = (
             ui.cli_view.change_user_information(class_user)
         )  # pylint: disable=E1111
+        class_user.name = name
         class_user.update_biometrical_data(
             birthdate=birthdate,
             height_in_cm=height_in_cm,

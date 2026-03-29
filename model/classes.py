@@ -320,7 +320,7 @@ class User:
         self.water_logs = water  # refactored by ai
         self.weight_logs = weight  # refactored by ai
         self.food_logs = food  # refactored by ai
-        self._meal = _validate_log_list(meal, MealLog, "Meal logs")  # refactored by ai
+        self.meal_logs = meal  # refactored by ai
 
     # Here are the biometrical data related methods.
     @property
@@ -431,6 +431,13 @@ class User:
     def meal_logs(self):
         """This is the getter for meal logs."""
         return self._meal
+
+    @meal_logs.setter
+    def meal_logs(self, new_meal_logs):
+        """This is the setter for meal logs. Partly AI-generated."""
+        self._meal = _validate_log_list(
+            new_meal_logs, MealLog, "Meal logs"
+        )  # refactored by ai
 
     def update_biometrical_data(
         self, birthdate=None, height_in_cm=None, gender=None, fitness_lvl=None

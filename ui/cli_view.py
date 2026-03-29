@@ -123,6 +123,10 @@ def change_user_information(user):
     print(
         "Change User Information. If you want to keep the current value, just press Enter."
     )
+    name = input(f"Enter your name. Currently: ({user.name}): ") or user.name
+    if not name.strip():
+        print("Invalid input for name. Keeping the current value.")
+        name = user.name
     try:
         birthdate = (
             input(f"Enter your birthdate (YYYY-MM-DD). Currently: ({user.birthdate}): ")
@@ -158,7 +162,7 @@ def change_user_information(user):
     if not {"beginner", "intermediate", "advanced"}.intersection({fitness_lvl.lower()}):
         print("Invalid input for fitness level. Keeping the current value.")
         fitness_lvl = user.fitness_lvl
-    return birthdate, height_in_cm, gender, fitness_lvl
+    return name, birthdate, height_in_cm, gender, fitness_lvl
 
 
 # Water log related functions
@@ -259,6 +263,7 @@ def prompt_main_menu():
         3. All about weight log:
         4. Change user information
         5. Exit
+        
         l. Show License
                                 """
     )
