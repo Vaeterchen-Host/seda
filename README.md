@@ -21,7 +21,7 @@ SEDA is a Python fitness tracking project with both a command-line interface and
 - `ui/` contains the Flet GUI, CLI view helpers, and tutorial examples
 - `data/` stores the main SQLite database
 - `tests/` contains automated tests
-- `docs/` contains German and English project structure notes
+- `docs/` contains structure notes and exported diagrams
 - `legacy/` keeps older code for reference
 - `utils/` contains helper and experimental files
 
@@ -57,13 +57,14 @@ You will then be asked whether to launch:
 Run the test suite with:
 
 ```bash
-pytest
+python -m pytest
 ```
 
 ## Notes
 
 - The project currently mixes active code, utilities, and older experiments.
 - `bug_tracker.py` documents known issues and technical debt.
+- `docs/` now also contains exported documentation assets such as diagrams and analysis files.
 
 ## Contact
 For questions or contributions, please reach out to the project maintainers [Vaeterchen_Host](https://github.com/Vaeterchen-Host) and [binerino](https://github.com/binerino).

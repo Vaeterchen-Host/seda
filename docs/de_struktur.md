@@ -30,7 +30,6 @@ Dieser Ordner enthält alles rund um die Benutzeroberfläche.
 Wichtige Dateien:
 - `ui.py`: grafische Oberfläche mit Flet
 - `cli_view.py`: Ein- und Ausgaben für die Kommandozeile
-- `ui_discardable.py`: eher experimentelle oder austauschbare UI-Datei
 - `tutorial/`: kleine Flet-Beispiele und Lernschritte
 
 
@@ -45,8 +44,14 @@ Hier liegen automatisierte Tests.
 
 Aktuell:
 - `test_classes.py`: Tests für Klassen aus `model/classes.py`
+- `test_cli_view.py`: Tests für CLI-View-Funktionen
 - `test_database.py`: Tests für Datenbankfunktionen
 - `test.db`: zusätzliche Testdatenbank
+
+### `test_db/`
+Dieser Ordner ist für isolierte Testdatenbanken vorgesehen.
+
+Er wird in `tests/test_database.py` als Zielpfad verwendet und kann lokal oder während Tests entstehen, auch wenn er nicht dauerhaft im Repository liegen muss.
 
 ### `docs/`
 Hier liegt die Projektdokumentation.
@@ -54,6 +59,8 @@ Hier liegt die Projektdokumentation.
 Aktuell:
 - `de_struktur.md`: deutsche Beschreibung der Projektstruktur
 - `en_structur.md`: englische Version der Strukturübersicht
+- mehrere exportierte Diagramme als `.png`
+- `Anforderungsanalyse Tabelle.ods`: begleitende Analyse-Dokumentation
 
 ### `utils/`
 Hier liegen Hilfsdateien, Einzeltests oder ältere Zusatzskripte.
@@ -71,11 +78,6 @@ Hier liegt älterer Code, der nicht mehr zum Hauptpfad gehört, aber noch aufbew
 Aktuell:
 - `ui_german.py`
 
-### `test_db/`
-Dieser Ordner wird für temporäre Testdatenbanken verwendet.
-
-Die Tests in `tests/test_database.py` erzeugen dort isolierte Datenbankdateien.
-
 ## Wichtige Dateien im Hauptordner
 
 ### `main.py`
@@ -83,6 +85,7 @@ Das ist der Einstiegspunkt des Programms.
 
 Aktuell:
 - fragt ab, ob die GUI oder die CLI gestartet werden soll
+- zeigt optional die Lizenz an
 - startet bei `y` die Flet-Oberfläche
 - startet bei `n` den CLI-Controller
 
@@ -93,6 +96,7 @@ Hier stehen zentrale Einstellungen und Pfade.
 Aktuell:
 - `BASE_DIR`
 - `DB_PATH`
+- `LICENSE_PATH`
 - `DB_TEST_PATH`
 - `DEVS`
 - `VERSION`
@@ -103,11 +107,11 @@ Diese Datei sammelt bekannte Probleme und technische Baustellen des Projekts.
 
 Sie ist keine Laufzeitlogik, aber nützlich für Planung und Wartung.
 
-### `requirement.txt`
+### `requirements.txt`
 Hier stehen die Python-Abhängigkeiten des Projekts, zum Beispiel:
 - `flet`
 - `Flask`
-- `pytest`-nahe Testumgebung
+- `pytest`
 - weitere Hilfsbibliotheken
 
 
@@ -136,6 +140,4 @@ Wichtig:
 
 - `utils/` sollte nur Hilfsfunktionen enthalten oder später sauber auf andere Ordner verteilt werden.
 - `legacy/` ist sinnvoll für alten Code, sollte aber nicht mit aktivem UI-Code verwechselt werden.
-- `ui_discardable.py` könnte später entfernt oder klar als Experiment markiert werden.
-
-
+- ältere UI-Dateien in `legacy/` könnten später weiter aufgeräumt oder klarer markiert werden.
