@@ -69,4 +69,28 @@ BUGS = [
         "area": "future feature",
         "notes": "This is more of a future feature than a bug.",
     },
+    {
+        "id": "BUG-009",
+        "title": "utils folder is used as a mixed staging area",
+        "status": "open",
+        "priority": "low",
+        "area": "utils/",
+        "notes": "The folder should ideally contain only helper functions, or be split into clearer responsibility-based folders later.",
+    },
+    {
+        "id": "BUG-010",
+        "title": "Legacy code can be confused with active UI code",
+        "status": "open",
+        "priority": "low",
+        "area": "legacy/ / ui/",
+        "notes": "The purpose of legacy code should stay clearly separated from actively maintained UI code.",
+    },
+    {
+        "id": "BUG-011",
+        "title": "ui_discardable.py is not clearly marked as experimental",
+        "status": "open",
+        "priority": "low",
+        "area": "ui/ui_discardable.py",
+        "notes": "The file should either be removed later or marked more clearly as experimental or disposable UI code.",
+    },
 ]

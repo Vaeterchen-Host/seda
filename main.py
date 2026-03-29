@@ -1,7 +1,7 @@
 """This is the main module of the project."""
 
-import model.controller
 import sys
+import model.controller
 from ui.ui import main, ft
 
 if __name__ == "__main__":
