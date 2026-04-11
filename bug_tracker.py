@@ -105,4 +105,12 @@ BUGS = [
         "area": "ui/cli_view.py / model/controller.py",
         "notes": "If the GPL text is shown in the CLI, it should be paginated, for example in blocks of 25 to 30 lines with Enter to continue, instead of printing one very long block.",
     },
+        {
+        "id": "BUG-013",
+        "title": "Unit of measurement for food and beverages",
+        "status": "open",
+        "priority": "medium",
+        "area": "classes.py",
+        "notes": "for logical reasons, we should define the measurement of 'amount_in_gram' to 'amount_in_gram_or_mililiters', as we are also going to track beverages such as coca cola etc. ",
+    },
 ]

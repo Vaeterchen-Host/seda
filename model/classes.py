@@ -293,6 +293,25 @@ class WeightLog:
         self._timestamp = new_timestamp
 
 
+class ActivityLog:
+    """This class defines the activity log for burned calories."""
+
+    def __init__(self, activity_log_id, activity_name, calories_burned, timestamp):
+        """This is the constructor of ActivityLog."""
+        self._id = activity_log_id
+        self.activity_name = activity_name
+        self.calories_burned = calories_burned
+        self.timestamp = timestamp
+
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, new_id):
+        self._id = new_id
+
+
 # User class. Somehow the main node of all classes.
 class User:
     """This is the class User."""
@@ -309,6 +328,7 @@ class User:
         weight: list[WeightLog],
         food: list[FoodLog],
         meal: list[MealLog],
+        activity: list[ActivityLog],
     ):
         """This is the constructor of User."""
         self._id = user_id
@@ -321,6 +341,8 @@ class User:
         self.weight_logs = weight  # refactored by ai
         self.food_logs = food  # refactored by ai
         self.meal_logs = meal  # refactored by ai
+        self.activity_logs = activity  # refactored by ai
+
 
     # Here are the biometrical data related methods.
     @property
@@ -438,6 +460,19 @@ class User:
         self._meal = _validate_log_list(
             new_meal_logs, MealLog, "Meal logs"
         )  # refactored by ai
+
+    @property
+    def activity_logs(self):
+        """This is the getter for activity logs."""
+        return self._activity
+
+    @activity_logs.setter
+    def activity_logs(self, new_activity_logs):
+        """This is the setter for activity logs."""
+        self._activity = _validate_log_list(
+            new_activity_logs, ActivityLog, "Activity logs"
+        )  # refactored by ai
+
 
     def update_biometrical_data(
         self, birthdate=None, height_in_cm=None, gender=None, fitness_lvl=None
@@ -562,3 +597,15 @@ class User:
                 remaining_meal_logs.append(meal_log)
 
         self._meal = remaining_meal_logs
+
+    # Here are the activity log related methods.
+    def add_activity_log(self, activity_name, calories_burned, timestamp=None):
+        """Method for adding an activity log."""
+        if timestamp is None:
+            timestamp = datetime.now().isoformat()
+        new_activity_log = ActivityLog(None, activity_name, calories_burned, timestamp)
+        self._activity.append(new_activity_log)
+        
+    def delete_activity_log(self, activity_log_id):
+        """Method for deleting an activity log. AI-generated."""
+        self._activity = [log for log in self._activity if log.id != activity_log_id] 

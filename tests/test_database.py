@@ -31,7 +31,7 @@ def db():
 @pytest.fixture
 def tobias():
     """Create a fresh user object for each test."""
-    return User(None, "Test", "2000-02-22", 185, "m", "beginner", [], [], [], [])
+    return User(None, "Test", "2000-02-22", 185, "m", "beginner", [], [], [], [], [])
 
 
 # AI-generated content end
@@ -160,3 +160,52 @@ def test_delete_water_log(db, tobias):
     row = cursor.fetchone()
     assert row is None, "Water log could not be deleted from the database"
     conn.close()
+
+# activity log related tests
+def test_activity_log_table_creation(db):
+    """This test checks if the activity log table is created successfully."""
+    conn = db.connect()
+    cursor = conn.cursor()
+    # Da create_tables() im init von Database aufgerufen wird, sollte sie schon da sein
+    cursor.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='activity_logs'"
+    )
+    table_exists = cursor.fetchone() is not None
+    assert table_exists, "Activity log table could not be created"
+    conn.close()
+
+
+def test_add_and_get_activity_log(db, tobias):
+    """This test checks if activities can be added and retrieved."""
+    # User anlegen, um eine ID zu haben
+    db.add_user(
+        tobias.name, tobias.birthdate, tobias.height_in_cm, tobias.gender, tobias.fitness_lvl
+    )
+    
+    # Aktivität hinzufügen (User ID 1, da frische DB)
+    db.add_activity_log(1, "Jogging", 450.5, "2026-04-11T18:00:00")
+    
+    logs = db.get_all_activity_logs()
+    assert len(logs) == 1, "Activity log count should be 1"
+    assert logs[0][2] == "Jogging", "Activity name does not match"
+    assert logs[0][3] == 450.5, "Calories burned do not match"
+
+
+def test_delete_activity_log(db, tobias):
+    """This test checks if an activity log can be deleted."""
+    db.add_user(
+        tobias.name, tobias.birthdate, tobias.height_in_cm, tobias.gender, tobias.fitness_lvl
+    )
+    db.add_activity_log(1, "Swimming", 300, "2026-04-11T19:00:00")
+    
+    # Zuerst ID holen
+    logs = db.get_all_activity_logs()
+    activity_id = logs[0][0]
+    
+    # Löschen
+    deleted_rows = db.delete_activity_log(activity_id)
+    assert deleted_rows == 1, "One row should have been deleted"
+    
+    # Verifizieren
+    logs_after = db.get_all_activity_logs()
+    assert len(logs_after) == 0, "Activity log table should be empty after deletion"

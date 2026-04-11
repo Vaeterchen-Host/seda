@@ -41,6 +41,7 @@ class Database:
         self.create_user_table()  # pylint: disable=no-value-for-parameter
         self.create_water_log_table()  # pylint: disable=no-value-for-parameter
         self.create_weight_log_table()  # pylint: disable=no-value-for-parameter
+        self.create_activity_log_table()  # pylint: disable=no-value-for-parameter
 
     def end_connection(self, conn):
         """This method ends the connection to the database."""
@@ -201,6 +202,52 @@ class Database:
         cursor = conn.cursor()
         cursor.execute(
             "DELETE FROM weight_logs WHERE weight_log_id = ?", (weight_log_id,)
+        )
+        conn.commit()
+        return cursor.rowcount
+    
+    # Here are the activity log related methods.
+    @connector
+    def create_activity_log_table(self, conn):
+        """This method creates the activity logs table."""
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS activity_logs (
+                       activity_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                       user_id INTEGER NOT NULL,
+                       activity_name TEXT NOT NULL,
+                       calories_burned REAL NOT NULL CHECK(calories_burned >= 0),
+                       timestamp TEXT NOT NULL,
+                       FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+            )"""
+        )
+        conn.commit()
+
+    @connector
+    def add_activity_log(self, conn, user_id, activity_name, calories_burned, timestamp):
+        """Adds an activity entry to the database."""
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO activity_logs (user_id, activity_name, calories_burned, timestamp) VALUES (?, ?, ?, ?)",
+            (user_id, activity_name, calories_burned, timestamp),
+        )
+        conn.commit()  
+
+    @connector
+    def get_all_activity_logs(self, conn) -> list:
+        """This method retrieves all activity logs from the database."""
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM activity_logs")
+        rows = cursor.fetchall()
+        return rows
+
+    @connector
+    def delete_activity_log(self, conn, activity_log_id) -> int:
+        """This method deletes an activity log from the database."""
+        cursor = conn.cursor()
+        cursor.execute(
+            "DELETE FROM activity_logs WHERE activity_log_id = ?", (activity_log_id,)
         )
         conn.commit()
         return cursor.rowcount
