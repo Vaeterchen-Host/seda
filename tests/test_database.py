@@ -166,7 +166,7 @@ def test_activity_log_table_creation(db):
     """This test checks if the activity log table is created successfully."""
     conn = db.connect()
     cursor = conn.cursor()
-    # Da create_tables() im init von Database aufgerufen wird, sollte sie schon da sein
+    # Since create_tables() is called in the database init function, it should already be there
     cursor.execute(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='activity_logs'"
     )
@@ -177,12 +177,12 @@ def test_activity_log_table_creation(db):
 
 def test_add_and_get_activity_log(db, tobias):
     """This test checks if activities can be added and retrieved."""
-    # User anlegen, um eine ID zu haben
+    # Create a user to get an ID
     db.add_user(
         tobias.name, tobias.birthdate, tobias.height_in_cm, tobias.gender, tobias.fitness_lvl
     )
     
-    # Aktivität hinzufügen (User ID 1, da frische DB)
+    # Add activity (User ID 1, since it's a new database)
     db.add_activity_log(1, "Jogging", 450.5, "2026-04-11T18:00:00")
     
     logs = db.get_all_activity_logs()
@@ -198,14 +198,75 @@ def test_delete_activity_log(db, tobias):
     )
     db.add_activity_log(1, "Swimming", 300, "2026-04-11T19:00:00")
     
-    # Zuerst ID holen
+    # retrieving ID first
     logs = db.get_all_activity_logs()
     activity_id = logs[0][0]
     
-    # Löschen
+    # deleting
     deleted_rows = db.delete_activity_log(activity_id)
     assert deleted_rows == 1, "One row should have been deleted"
     
-    # Verifizieren
+    # verifying
     logs_after = db.get_all_activity_logs()
     assert len(logs_after) == 0, "Activity log table should be empty after deletion"
+
+
+# food master data related tests
+def test_food_table_creation(db):
+    """This test checks if the food master data table is created successfully."""
+    conn = db.connect()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='foods'"
+    )
+    table_exists = cursor.fetchone() is not None
+    assert table_exists, "Foods table could not be created"
+    conn.close()
+
+def test_add_and_get_food(db):
+    """This test checks if a food item can be added and retrieved with all nutrients."""
+    # We simulate the nutritional values as a dictionary (to match the `add_food` method)
+    apple_nutrients = {
+        'calorie': 52,
+        'fat': 0.2,
+        'saturated_fat': 0.0,
+        'carbohydrate': 14.0,
+        'fibre': 2.4,
+        'sugar': 10.0,
+        'protein': 0.3,
+        'salt': 0.0,
+        'sodium': 0.0
+    }
+    
+    # 1. adding Food
+    db.add_food("Apple", "food", apple_nutrients)
+    
+    # 2. view all
+    all_foods = db.get_all_foods()
+    assert len(all_foods) == 1
+    
+    # 3. checking all (Index: 0=id, 1=name, 2=food_type, 3=calorie, ...)
+    apple_row = all_foods[0]
+    assert apple_row[1] == "Apple"
+    assert apple_row[2] == "food"
+    assert apple_row[3] == 52       # calorie
+    assert apple_row[9] == 0.3      # protein
+
+
+def test_delete_food(db):
+    """This test checks if a food item can be deleted from master data."""
+    # Placeholder nutritional values for the test
+    nutrients = {k: 0 for k in ['calorie', 'fat', 'saturated_fat', 'carbohydrate', 
+                                'fibre', 'sugar', 'protein', 'salt', 'sodium']}
+    
+    db.add_food("Testfood", "food", nutrients)
+    foods_before = db.get_all_foods()
+    food_id = foods_before[0][0]
+    
+    # deleting
+    deleted_count = db.delete_food(food_id)
+    assert deleted_count == 1
+    
+    # verifying
+    foods_after = db.get_all_foods()
+    assert len(foods_after) == 0
