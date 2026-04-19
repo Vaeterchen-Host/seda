@@ -40,7 +40,7 @@ except Exception as e:
 
 # search for a product by name
 PRODUCT_NAME = "Coca-Cola"
-SEARCH_URL = f"https://world.openfoodfacts.net/cgi/search.pl?search_terms={PRODUCT_NAME}&search_simple=1&action=process&json=1"
+SEARCH_URL = f"https://world.openfoodfacts.net/cgi/search.pl?search_terms={PRODUCT_NAME}&search_simple=1&action=process&json=1"  # pylint: disable=line-too-long
 try:
     response = requests.api.get(SEARCH_URL, timeout=10)
     if response.status_code == 200:
