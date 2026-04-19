@@ -42,7 +42,7 @@ class Database:
         self.create_water_log_table()  # pylint: disable=no-value-for-parameter
         self.create_weight_log_table()  # pylint: disable=no-value-for-parameter
         self.create_activity_log_table()  # pylint: disable=no-value-for-parameter
-        self.create_food_table()  # pylint: disable=no-value-for-parameter
+        # self.create_food_table()  # pylint: disable=no-value-for-parameter
 
     def end_connection(self, conn):
         """This method ends the connection to the database."""
@@ -206,7 +206,7 @@ class Database:
         )
         conn.commit()
         return cursor.rowcount
-    
+
     # Here are the activity log related methods.
     @connector
     def create_activity_log_table(self, conn):
@@ -226,14 +226,16 @@ class Database:
         conn.commit()
 
     @connector
-    def add_activity_log(self, conn, user_id, activity_name, calories_burned, timestamp):
+    def add_activity_log(
+        self, conn, user_id, activity_name, calories_burned, timestamp
+    ):
         """Adds an activity entry to the database."""
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO activity_logs (user_id, activity_name, calories_burned, timestamp) VALUES (?, ?, ?, ?)",
             (user_id, activity_name, calories_burned, timestamp),
         )
-        conn.commit()  
+        conn.commit()
 
     @connector
     def get_all_activity_logs(self, conn) -> list:
@@ -253,59 +255,63 @@ class Database:
         conn.commit()
         return cursor.rowcount
 
-    # Here are the food related methods.
-    @connector
-    def create_food_table(self, conn):
-        """This method creates the food master data table based on the NutrientSummary."""
-        cursor = conn.cursor()
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS foods (
-                food_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                food_type TEXT NOT NULL,
-                calorie INTEGER NOT NULL,
-                fat REAL NOT NULL,
-                saturated_fat REAL NOT NULL,
-                carbohydrate REAL NOT NULL,
-                fibre REAL NOT NULL,
-                sugar REAL NOT NULL,
-                protein REAL NOT NULL,
-                salt REAL NOT NULL,
-                sodium REAL NOT NULL
-            )"""
-        )
-        conn.commit()
 
-    @connector
-    def add_food(self, conn, name, food_type, nutrients: dict):
-        """Adds a new food item. Expects nutrients as a dict matching NutrientSummary."""
-        cursor = conn.cursor()
-        cursor.execute(
-            """INSERT INTO foods (
-                name, food_type, calorie, fat, saturated_fat, carbohydrate, 
-                fibre, sugar, protein, salt, sodium
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            (
-                name, food_type, 
-                nutrients['calorie'], nutrients['fat'], nutrients['saturated_fat'],
-                nutrients['carbohydrate'], nutrients['fibre'], nutrients['sugar'],
-                nutrients['protein'], nutrients['salt'], nutrients['sodium']
-            )
-        )
-        conn.commit()
+# Food related methods are currently commented out because a static Food-DB will be implemented soon.
+# We must combine the food DB and the OFF API later for full functionality.
 
-    @connector
-    def get_all_foods(self, conn):
-        """Retrieves all available foods."""
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM foods ORDER BY name ASC")
-        return cursor.fetchall()
+# # Here are the food related methods.
+# @connector
+# def create_food_table(self, conn):
+#     """This method creates the food master data table based on the NutrientSummary."""
+#     cursor = conn.cursor()
+#     cursor.execute(
+#         """
+#         CREATE TABLE IF NOT EXISTS foods (
+#             food_id INTEGER PRIMARY KEY AUTOINCREMENT,
+#             name TEXT NOT NULL,
+#             food_type TEXT NOT NULL,
+#             calorie INTEGER NOT NULL,
+#             fat REAL NOT NULL,
+#             saturated_fat REAL NOT NULL,
+#             carbohydrate REAL NOT NULL,
+#             fibre REAL NOT NULL,
+#             sugar REAL NOT NULL,
+#             protein REAL NOT NULL,
+#             salt REAL NOT NULL,
+#             sodium REAL NOT NULL
+#         )"""
+#     )
+#     conn.commit()
 
-    @connector
-    def delete_food(self, conn, food_id):
-        """Deletes a food item by ID."""
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM foods WHERE food_id = ?", (food_id,))
-        conn.commit()
-        return cursor.rowcount
+# @connector
+# def add_food(self, conn, name, food_type, nutrients: dict):
+#     """Adds a new food item. Expects nutrients as a dict matching NutrientSummary."""
+#     cursor = conn.cursor()
+#     cursor.execute(
+#         """INSERT INTO foods (
+#             name, food_type, calorie, fat, saturated_fat, carbohydrate,
+#             fibre, sugar, protein, salt, sodium
+#         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+#         (
+#             name, food_type,
+#             nutrients['calorie'], nutrients['fat'], nutrients['saturated_fat'],
+#             nutrients['carbohydrate'], nutrients['fibre'], nutrients['sugar'],
+#             nutrients['protein'], nutrients['salt'], nutrients['sodium']
+#         )
+#     )
+#     conn.commit()
+
+# @connector
+# def get_all_foods(self, conn):
+#     """Retrieves all available foods."""
+#     cursor = conn.cursor()
+#     cursor.execute("SELECT * FROM foods ORDER BY name ASC")
+#     return cursor.fetchall()
+
+# @connector
+# def delete_food(self, conn, food_id):
+#     """Deletes a food item by ID."""
+#     cursor = conn.cursor()
+#     cursor.execute("DELETE FROM foods WHERE food_id = ?", (food_id,))
+#     conn.commit()
+#     return cursor.rowcount
