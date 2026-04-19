@@ -3,9 +3,13 @@
 # See LICENSE.md for the full license text.
 
 """Database layer for SEDA."""
+import sys
+from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+# pylint: disable=C0413, E1120, C0301
 import sqlite3
-from config import DB_PATH
+from config import DB_PATH, FOOD_DB_PATH
 
 
 def connector(func):
@@ -22,6 +26,59 @@ def connector(func):
     return wrapper
 
 
+# added class for Food-DB, which is static. It will coexist with the(main-)DB and the OFF API calls.
+class FoodDatabase:
+    """This class defines the Food_Database."""
+
+    def __init__(self, db=FOOD_DB_PATH):
+        """This is the constructor of the Food_Database."""
+        self._db = db
+
+    def connect(self):
+        """This method connects to the food database."""
+        conn = sqlite3.connect(self._db)
+        return conn
+
+    def end_connection(self, conn):
+        """This method ends the connection to the food database."""
+        conn.close()
+
+    @connector
+    def get_one_food_by_name(self, conn, food_name):
+        """This method retrieves a food item from the database by its name."""
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM foods WHERE name = ?", (food_name,))
+        return cursor.fetchone()
+
+    @connector
+    def get_query_food_by_name(self, conn, food_name):
+        """This method retrieves a list of food items from the database that match the query name."""
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM foods WHERE name LIKE ?", (f"%{food_name}%",))
+        return cursor.fetchall()
+
+    @connector
+    def custom_sql_query(self, conn, query):
+        """This method allows for custom SQL queries to be executed on the food database."""
+        cursor = conn.cursor()
+        cursor.execute(query)
+        return cursor.fetchall()
+
+
+# for dev and testing purposes.
+if __name__ == "__main__":
+    QUERY = """
+    SELECT name_de, name_en, kcal, protein, fat
+    FROM foods where name_de like '%Apfel%'
+    LIMIT 5;
+    """
+    food_db = FoodDatabase()
+    results = food_db.custom_sql_query(QUERY)
+    for row in results:
+        print(row)
+
+
+# The main Database class for everything else.
 class Database:
     """This class defines the Database."""
 
@@ -256,73 +313,6 @@ class Database:
         cursor.execute(
             "DELETE FROM activity_logs WHERE activity_log_id = ?", (activity_log_id,)
         )
-        conn.commit()
-        return cursor.rowcount
-
-    # Food related methods are currently commented out because a static Food-DB will be implemented soon.
-    # We must combine the food DB and the OFF API later for full functionality.
-
-    # # Here are the food related methods.
-    # @connector
-    # def create_food_table(self, conn):
-    #     """This method creates the food master data table based on the NutrientSummary."""
-    #     cursor = conn.cursor()
-    #     cursor.execute(
-    #         """
-    #         CREATE TABLE IF NOT EXISTS foods (
-    #             food_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    #             name TEXT NOT NULL,
-    #             food_type TEXT NOT NULL,
-    #             calorie INTEGER NOT NULL,
-    #             fat REAL NOT NULL,
-    #             saturated_fat REAL NOT NULL,
-    #             carbohydrate REAL NOT NULL,
-    #             fibre REAL NOT NULL,
-    #             sugar REAL NOT NULL,
-    #             protein REAL NOT NULL,
-    #             salt REAL NOT NULL,
-    #             sodium REAL NOT NULL
-    #         )"""
-    #     )
-    #     conn.commit()
-
-    # @connector
-    # def add_food(self, conn, name, food_type, nutrients: dict):
-    #     """Adds a new food item. Expects nutrients as a dict matching NutrientSummary."""
-    #     cursor = conn.cursor()
-    #     cursor.execute(
-    #         """INSERT INTO foods (
-    #             name, food_type, calorie, fat, saturated_fat, carbohydrate,
-    #             fibre, sugar, protein, salt, sodium
-    #         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-    #         (
-    #             name, food_type,
-    #             nutrients['calorie'], nutrients['fat'], nutrients['saturated_fat'],
-    #             nutrients['carbohydrate'], nutrients['fibre'], nutrients['sugar'],
-    #             nutrients['protein'], nutrients['salt'], nutrients['sodium']
-    #         )
-    #     )
-    #     conn.commit()
-
-    # @connector
-    # def get_all_foods(self, conn):
-    #     """Retrieves all available foods."""
-    #     cursor = conn.cursor()
-    #     cursor.execute("SELECT * FROM foods ORDER BY name ASC")
-    #     return cursor.fetchall()
-
-    # @connector
-    # def delete_food(self, conn, food_id):
-    #     """Deletes a food item by ID."""
-    #     cursor = conn.cursor()
-    #     cursor.execute("DELETE FROM foods WHERE food_id = ?", (food_id,))
-    #     conn.commit()
-    #     return cursor.rowcount
-    @connector
-    def delete_food(self, conn, food_id):
-        """Deletes a food item by ID."""
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM foods WHERE food_id = ?", (food_id,))
         conn.commit()
         return cursor.rowcount
 
