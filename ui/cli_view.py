@@ -20,12 +20,100 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 # Type example german food query.
 # Just for testing. Must be deleted.
-FOOD = "Cola"
+FOOD = "Pils"
+
+FOOD_DISPLAY_SECTIONS = [  # ai-generated
+    (
+        "Energy and Basic Values (per 100g)",
+        [
+            ("Calories:", "kcal", "kcal"),
+            ("Water:", "water", "g"),
+            ("Alcohol:", "alcohol", "g"),
+            ("Salt:", "salt", "g"),
+        ],
+    ),
+    (
+        "Macronutrients (per 100g)",
+        [
+            ("Protein:", "protein", "g"),
+            ("Fat:", "fat", "g"),
+            ("Saturated fat:", "saturated_fat", "g"),
+            ("Monounsaturated:", "monounsaturated_fat", "g"),
+            ("Polyunsaturated:", "polyunsaturated_fat", "g"),
+            ("Omega-3:", "omega_3", "g"),
+            ("Omega-6:", "omega_6", "g"),
+            ("Carbohydrates:", "carbohydrate", "g"),
+            ("Sugar:", "sugar", "g"),
+            ("Starch:", "starch", "g"),
+            ("Fibre:", "fibre", "g"),
+        ],
+    ),
+    (
+        "Other Nutrients",
+        [
+            ("Cholesterol:", "cholesterol", "mg"),
+        ],
+    ),
+    (
+        "Minerals",
+        [
+            ("Sodium:", "sodium", "mg"),
+            ("Potassium:", "potassium", "mg"),
+            ("Calcium:", "calcium", "mg"),
+            ("Magnesium:", "magnesium", "mg"),
+            ("Phosphorus:", "phosphorus", "mg"),
+            ("Iron:", "iron", "mg"),
+            ("Zinc:", "zinc", "mg"),
+            ("Iodine:", "iodine", "µg"),
+            ("Copper:", "copper", "µg"),
+            ("Manganese:", "manganese", "µg"),
+            ("Fluoride:", "fluoride", "µg"),
+            ("Chromium:", "chromium", "µg"),
+            ("Molybdenum:", "molybdenum", "µg"),
+        ],
+    ),
+    (
+        "Vitamins",
+        [
+            ("Vitamin A (RE):", "vitamin_a_re", "µg"),
+            ("Vitamin A (RAE):", "vitamin_a_rae", "µg"),
+            ("Retinol:", "retinol", "µg"),
+            ("Beta-carotene:", "beta_carotene", "µg"),
+            ("Vitamin D:", "vitamin_d", "µg"),
+            ("Vitamin D2:", "vitamin_d2", "µg"),
+            ("Vitamin D3:", "vitamin_d3", "µg"),
+            ("Vitamin E:", "vitamin_e", "mg"),
+            ("Alpha-tocopherol:", "alpha_tocopherol", "mg"),
+            ("Vitamin K:", "vitamin_k", "µg"),
+            ("Vitamin K1:", "vitamin_k1", "µg"),
+            ("Vitamin K2:", "vitamin_k2", "µg"),
+            ("Vitamin B1:", "vitamin_b1", "mg"),
+            ("Vitamin B2:", "vitamin_b2", "mg"),
+            ("Niacin:", "niacin", "mg"),
+            ("Niacin equivalent:", "niacin_equivalent", "mg"),
+            ("Pantothenic acid:", "pantothenic_acid", "mg"),
+            ("Vitamin B6:", "vitamin_b6", "µg"),
+            ("Biotin:", "biotin", "µg"),
+            ("Folate equivalent:", "folate_equivalent", "µg"),
+            ("Folate:", "folate", "µg"),
+            ("Folic acid:", "folic_acid", "µg"),
+            ("Vitamin B12:", "vitamin_b12", "µg"),
+            ("Vitamin C:", "vitamin_c", "mg"),
+        ],
+    ),
+]
 
 
 def show_message(message):
     """Print a message to the console."""
     print(message)
+
+
+def print_food_section(title, items, data):
+    """Print a formatted nutrient section."""
+    print(f"\n--- {title} ---")
+    for label, key, unit in items:
+        print(f"{label:<24} {data[key]} {unit}")
 
 
 def prompt_log_id():
@@ -113,7 +201,16 @@ def create_user_by_input():
             "Fitness level must be 'beginner', 'intermediate', or 'advanced'. Please enter a valid fitness level."
         )
     return User(
-        None, name, birthdate, height_in_cm, gender, fitness_lvl, [], [], [], [], []
+        None,
+        name,
+        birthdate,
+        height_in_cm,
+        gender,
+        fitness_lvl,
+        [],
+        [],
+        [],
+        [],
     )
 
 
@@ -349,42 +446,8 @@ def example_query(food_name="Hafer"):
     print(f"BLS Code: {data['bls_code']}")
     print("=" * 60)
 
-    # --- Macronutrients (per 100g) ---
-    print("\n--- Macronutrients (per 100g) ---")
-    print(f"Calories:              {data['kcal']} kcal")
-    print(f"Protein:               {data['protein']} g")
-    print(f"Fat:                   {data['fat']} g")
-    print(f"  Saturated:           {data['saturated_fat']} g")
-    print(f"  Monounsaturated:     {data['monounsaturated_fat']} g")
-    print(f"  Polyunsaturated:     {data['polyunsaturated_fat']} g")
-    print(f"Carbohydrates:         {data['carbohydrate']} g")
-    print(f"  Sugar:               {data['sugar']} g")
-    print(f"Fibre:                 {data['fibre']} g")
-
-    # --- Minerals ---
-    print("\n--- Minerals ---")
-    print(f"Salt:                  {data['salt']} g")
-    print(f"Sodium:                {data['sodium']} mg")
-    print(f"Potassium:             {data['potassium']} mg")
-    print(f"Calcium:               {data['calcium']} mg")
-    print(f"Magnesium:             {data['magnesium']} mg")
-    print(f"Iron:                  {data['iron']} mg")
-    print(f"Zinc:                  {data['zinc']} mg")
-    print(f"Iodine:                {data['iodine']} µg")
-
-    # --- Vitamins ---
-    print("\n--- Vitamins ---")
-    print(f"Vitamin A:             {data['vitamin_a']} µg")
-    print(f"Vitamin D:             {data['vitamin_d']} µg")
-    print(f"Vitamin E:             {data['vitamin_e']} mg")
-    print(f"Vitamin K:             {data['vitamin_k']} µg")
-    print(f"Vitamin B1:            {data['vitamin_b1']} mg")
-    print(f"Vitamin B2:            {data['vitamin_b2']} mg")
-    print(f"Niacin:                {data['niacin']} mg")
-    print(f"Vitamin B6:            {data['vitamin_b6']} µg")
-    print(f"Folate:                {data['folate']} µg")
-    print(f"Vitamin B12:           {data['vitamin_b12']} µg")
-    print(f"Vitamin C:             {data['vitamin_c']} mg")
+    for title, items in FOOD_DISPLAY_SECTIONS:
+        print_food_section(title, items, data)
 
     print("\n" + "=" * 60 + "\n")
 

@@ -6,6 +6,7 @@
 
 from datetime import datetime
 from dataclasses import dataclass
+from typing import Optional
 
 
 # ai-generated content start: helper function for validating log lists.
@@ -16,6 +17,13 @@ def _validate_log_list(logs, log_type, label):
     return logs
 
 
+def _validate_non_negative(values):
+    """Validate that nutrient values are non-negative."""
+    for name, value in values.items():
+        if value is not None and value < 0:
+            raise ValueError(f"{name} must be non-negative. Got {value}.")
+
+
 # All classes about food.
 
 
@@ -23,69 +31,151 @@ def _validate_log_list(logs, log_type, label):
 class BigSeven:
     """This class defines the nutrient summary of a food."""
 
-    fat: float
-    saturated_fat: float
-    carbohydrate: float
-    fibre: float
-    sugar: float
-    protein: float
-    salt: float
+    fat: Optional[float]
+    saturated_fat: Optional[float]
+    carbohydrate: Optional[float]
+    fibre: Optional[float]
+    sugar: Optional[float]
+    protein: Optional[float]
+    salt: Optional[float]
 
-
-def __post_init__(self):
-    values = {
-        "fat": self.fat,
-        "saturated_fat": self.saturated_fat,
-        "carbohydrate": self.carbohydrate,
-        "fibre": self.fibre,
-        "sugar": self.sugar,
-        "protein": self.protein,
-        "salt": self.salt,
-    }
-    for name, value in values.items():
-        if value < 0:
-            raise ValueError(f"{name} must be positive. Got {value}.")
+    def __post_init__(self):
+        """Validate that the nutrient values are non-negative."""
+        _validate_non_negative(
+            {
+                "fat": self.fat,
+                "saturated_fat": self.saturated_fat,
+                "carbohydrate": self.carbohydrate,
+                "fibre": self.fibre,
+                "sugar": self.sugar,
+                "protein": self.protein,
+                "salt": self.salt,
+            }
+        )
 
 
 @dataclass
 class NutrientSummary:
     """This class defines the nutrient summary outside of the big seven."""
 
-    water: float  # in g
-    monounsaturated_fat: float  # in g
-    polyunsaturated_fat: float  # in g
-    sodium: float  # in mg
-    potassium: float  # in mg
-    calcium: float  # in mg
-    magnesium: float  # in mg
-    iron: float  # in mg
-    zinc: float  # in mg
-    iodine: float  # in µg
-    vitamin_a: float  # in µg
-    vitamin_d: float  # in µg
-    vitamin_e: float  # in mg
-    vitamin_k: float  # in µg
-    vitamin_b1: float  # in mg
-    vitamin_b2: float  # in mg
-    niacin: float  # in mg
-    vitamin_b6: float  # in µg
-    folate: float  # in µg
-    vitamin_b12: float  # in µg
-    vitamin_c: float  # in mg
+    water: Optional[float]  # in g per 100g
+    monounsaturated_fat: Optional[float]  # in g per 100g
+    polyunsaturated_fat: Optional[float]  # in g per 100g
+    omega_3: Optional[float]  # in g per 100g
+    omega_6: Optional[float]  # in g per 100g
+    starch: Optional[float]  # in g per 100g
+    alcohol: Optional[float]  # in g per 100g
+    sodium: Optional[float]  # in mg per 100g
+    cholesterol: Optional[float]  # in mg per 100g
+    potassium: Optional[float]  # in mg per 100g
+    calcium: Optional[float]  # in mg per 100g
+    magnesium: Optional[float]  # in mg per 100g
+    phosphorus: Optional[float]  # in mg per 100g
+    iron: Optional[float]  # in mg per 100g
+    zinc: Optional[float]  # in mg per 100g
+    iodine: Optional[float]  # in µg per 100g
+    copper: Optional[float]  # in µg per 100g
+    manganese: Optional[float]  # in µg per 100g
+    fluoride: Optional[float]  # in µg per 100g
+    chromium: Optional[float]  # in µg per 100g
+    molybdenum: Optional[float]  # in µg per 100g
+    vitamin_a_re: Optional[float]  # in µg per 100g
+    vitamin_a_rae: Optional[float]  # in µg per 100g
+    retinol: Optional[float]  # in µg per 100g
+    beta_carotene: Optional[float]  # in µg per 100g
+    vitamin_d: Optional[float]  # in µg per 100g
+    vitamin_d2: Optional[float]  # in µg per 100g
+    vitamin_d3: Optional[float]  # in µg per 100g
+    vitamin_e: Optional[float]  # in mg per 100g
+    alpha_tocopherol: Optional[float]  # in mg per 100g
+    vitamin_k: Optional[float]  # in µg per 100g
+    vitamin_k1: Optional[float]  # in µg per 100g
+    vitamin_k2: Optional[float]  # in µg per 100g
+    vitamin_b1: Optional[float]  # in mg per 100g
+    vitamin_b2: Optional[float]  # in mg per 100g
+    niacin: Optional[float]  # in mg per 100g
+    niacin_equivalent: Optional[float]  # in mg per 100g
+    pantothenic_acid: Optional[float]  # in mg per 100g
+    vitamin_b6: Optional[float]  # in µg per 100g
+    biotin: Optional[float]  # in µg per 100g
+    folate_equivalent: Optional[float]  # in µg per 100g
+    folate: Optional[float]  # in µg per 100g
+    folic_acid: Optional[float]  # in µg per 100g
+    vitamin_b12: Optional[float]  # in µg per 100g
+    vitamin_c: Optional[float]  # in mg per 100g
+
+    def __post_init__(self):
+        """Validate that the nutrient values are non-negative."""
+        _validate_non_negative(
+            {
+                "water": self.water,
+                "monounsaturated_fat": self.monounsaturated_fat,
+                "polyunsaturated_fat": self.polyunsaturated_fat,
+                "omega_3": self.omega_3,
+                "omega_6": self.omega_6,
+                "starch": self.starch,
+                "alcohol": self.alcohol,
+                "sodium": self.sodium,
+                "cholesterol": self.cholesterol,
+                "potassium": self.potassium,
+                "calcium": self.calcium,
+                "magnesium": self.magnesium,
+                "phosphorus": self.phosphorus,
+                "iron": self.iron,
+                "zinc": self.zinc,
+                "iodine": self.iodine,
+                "copper": self.copper,
+                "manganese": self.manganese,
+                "fluoride": self.fluoride,
+                "chromium": self.chromium,
+                "molybdenum": self.molybdenum,
+                "vitamin_a_re": self.vitamin_a_re,
+                "vitamin_a_rae": self.vitamin_a_rae,
+                "retinol": self.retinol,
+                "beta_carotene": self.beta_carotene,
+                "vitamin_d": self.vitamin_d,
+                "vitamin_d2": self.vitamin_d2,
+                "vitamin_d3": self.vitamin_d3,
+                "vitamin_e": self.vitamin_e,
+                "alpha_tocopherol": self.alpha_tocopherol,
+                "vitamin_k": self.vitamin_k,
+                "vitamin_k1": self.vitamin_k1,
+                "vitamin_k2": self.vitamin_k2,
+                "vitamin_b1": self.vitamin_b1,
+                "vitamin_b2": self.vitamin_b2,
+                "niacin": self.niacin,
+                "niacin_equivalent": self.niacin_equivalent,
+                "pantothenic_acid": self.pantothenic_acid,
+                "vitamin_b6": self.vitamin_b6,
+                "biotin": self.biotin,
+                "folate_equivalent": self.folate_equivalent,
+                "folate": self.folate,
+                "folic_acid": self.folic_acid,
+                "vitamin_b12": self.vitamin_b12,
+                "vitamin_c": self.vitamin_c,
+            }
+        )
 
 
 class Food:
     """This class defines the food-items."""
 
     def __init__(
-        self, food_id, name, unit_type, calories, nutrients_per_100g: BigSeven
+        self,
+        food_id,
+        name,
+        unit_type,
+        calories,
+        big_seven_per_100g: BigSeven,
+        nutrient_summary: NutrientSummary,
     ):
         """This is the constructor of Food."""
         self._id = food_id
         self._name = name
         self._unit_type = unit_type
         self._calories_per_100_units = calories
-        self._nutrients_per_100_units = nutrients_per_100g
+        self._big_seven_per_100_units = big_seven_per_100g
+        self._nutrient_summary = nutrient_summary
 
 
 class Meal:
