@@ -2,10 +2,9 @@
 # Copyright (C) 2026 Tobias Mignat & Sabine Steverding
 # See LICENSE.md for the full license text.
 
-"""Core domain classes for SEDA."""
+"""Core domain classes for SEDA. Legacy code from the first release."""
 
 from datetime import datetime
-from dataclasses import dataclass
 
 
 # ai-generated content start: helper function for validating log lists.
@@ -19,97 +18,67 @@ def _validate_log_list(logs, log_type, label):
 # All classes about food.
 
 
-@dataclass
-class BigSeven:
+class NutrientSummary:
     """This class defines the nutrient summary of a food."""
 
-    fat: float
-    saturated_fat: float
-    carbohydrate: float
-    fibre: float
-    sugar: float
-    protein: float
-    salt: float
-
-
-def __post_init__(self):
-    values = {
-        "fat": self.fat,
-        "saturated_fat": self.saturated_fat,
-        "carbohydrate": self.carbohydrate,
-        "fibre": self.fibre,
-        "sugar": self.sugar,
-        "protein": self.protein,
-        "salt": self.salt,
-    }
-    for name, value in values.items():
-        if value < 0:
-            raise ValueError(f"{name} must be positive. Got {value}.")
-
-
-@dataclass
-class NutrientSummary:
-    """This class defines the nutrient summary outside of the big seven."""
-
-    water: float  # in g
-    monounsaturated_fat: float  # in g
-    polyunsaturated_fat: float  # in g
-    sodium: float  # in mg
-    potassium: float  # in mg
-    calcium: float  # in mg
-    magnesium: float  # in mg
-    iron: float  # in mg
-    zinc: float  # in mg
-    iodine: float  # in µg
-    vitamin_a: float  # in µg
-    vitamin_d: float  # in µg
-    vitamin_e: float  # in mg
-    vitamin_k: float  # in µg
-    vitamin_b1: float  # in mg
-    vitamin_b2: float  # in mg
-    niacin: float  # in mg
-    vitamin_b6: float  # in µg
-    folate: float  # in µg
-    vitamin_b12: float  # in µg
-    vitamin_c: float  # in mg
+    def __init__(
+        self,
+        calorie,
+        fat,
+        saturated_fat,
+        carbohydrate,
+        fibre,
+        sugar,
+        protein,
+        salt,
+        sodium,
+    ):
+        """This is the constructor of NutrientSummary."""
+        self.calorie = calorie
+        self.fat = fat
+        self.saturated_fat = saturated_fat
+        self.carbohydrate = carbohydrate
+        self.fibre = fibre
+        self.sugar = sugar
+        self.protein = protein
+        self.salt = salt
+        self.sodium = sodium
 
 
 class Food:
-    """This class defines the food-items."""
+    """This class defines the food."""
 
-    def __init__(
-        self, food_id, name, unit_type, calories, nutrients_per_100g: BigSeven
-    ):
+    def __init__(self, food_id, name, food_type, nutrients_per_100g: NutrientSummary):
         """This is the constructor of Food."""
         self._id = food_id
         self._name = name
-        self._unit_type = unit_type
-        self._calories_per_100_units = calories
-        self._nutrients_per_100_units = nutrients_per_100g
+        self._type = food_type
+        self.nutrients_per_100g = nutrients_per_100g
+
+
+class MealItem:
+    """This class defines the meal item."""
+
+    def __init__(self, food: Food, amount_in_gram):
+        """This is the constructor of MealItem."""
+        self.food = food
+        self.amount_in_gram = amount_in_gram
 
 
 class Meal:
     """This class defines the meal."""
 
-    def __init__(self, meal_id, name, items: list[Food]):
+    def __init__(self, meal_id, name, items: list[MealItem]):
         """This is the constructor of Meal."""
         self._id = meal_id
         self._name = name
         self._items = items
 
     # Here are the meal related methods.
-    def calculate_big_seven(self):
+    def calculate_nutrient_summary(self):
         """Method for calculating the nutrient summary of the meal."""
         if not self._items:
-            return BigSeven(
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-            )
+            return NutrientSummary(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
         total = {
             "calorie": 0,
@@ -120,6 +89,7 @@ class Meal:
             "sugar": 0,
             "protein": 0,
             "salt": 0,
+            "sodium": 0,
         }
 
         for item in self._items:
@@ -133,8 +103,9 @@ class Meal:
             total["sugar"] += nutrients.sugar * factor
             total["protein"] += nutrients.protein * factor
             total["salt"] += nutrients.salt * factor
+            total["sodium"] += nutrients.sodium * factor
 
-        return BigSeven(
+        return NutrientSummary(
             total["calorie"],
             total["fat"],
             total["saturated_fat"],
@@ -142,14 +113,58 @@ class Meal:
             total["fibre"],
             total["sugar"],
             total["protein"],
+            total["salt"],
+            total["sodium"],
         )
 
-    def add_meal_composition(self, meal_item):
-        """Method for adding a meal composition. (Later when DB exists)"""
+    def add_meal_item(self, meal_item):
+        """Method for adding a meal item. (Later when DB exists)"""
         self._items.append(meal_item)
 
 
 # All classes for logging
+
+
+class FoodLog:
+    """This class defines the food log."""
+
+    def __init__(self, food_log_id, food, amount_in_gram, timestamp):
+        """This is the constructor of FoodLog."""
+        self._id = food_log_id
+        self._food = food
+        self._amount_in_gram = amount_in_gram
+        self._timestamp = timestamp
+
+    # Here are the food log related methods.
+    @property
+    def id(self):
+        """This is the getter for id."""
+        return self._id
+
+    @id.setter
+    def id(self, new_id):
+        """This is the setter for id."""
+        self._id = new_id
+
+    def calculate_nutrient_summary(self):
+        """Method for calculating the nutrient summary of the food log."""
+        factor = self._amount_in_gram / 100
+        nutrients = self._food.nutrients_per_100g
+        return NutrientSummary(
+            nutrients.calorie * factor,
+            nutrients.fat * factor,
+            nutrients.saturated_fat * factor,
+            nutrients.carbohydrate * factor,
+            nutrients.fibre * factor,
+            nutrients.sugar * factor,
+            nutrients.protein * factor,
+            nutrients.salt * factor,
+            nutrients.sodium * factor,
+        )
+
+    def create_daytime_object(self):
+        """Method for creating a daytime object for the timestamp."""
+        return datetime.fromisoformat(self._timestamp)
 
 
 class MealLog:
@@ -177,7 +192,8 @@ class MealLog:
         """Method for calculating the nutrient summary of the meal log."""
         meal_summary = self._meal.calculate_nutrient_summary()
         factor = self._amount_in_gram / 100
-        return BigSeven(
+        return NutrientSummary(
+            meal_summary.calorie * factor,
             meal_summary.fat * factor,
             meal_summary.saturated_fat * factor,
             meal_summary.carbohydrate * factor,
@@ -185,6 +201,7 @@ class MealLog:
             meal_summary.sugar * factor,
             meal_summary.protein * factor,
             meal_summary.salt * factor,
+            meal_summary.sodium * factor,
         )
 
 
@@ -311,6 +328,7 @@ class User:
         fitness_lvl,
         water: list[WaterLog],
         weight: list[WeightLog],
+        food: list[FoodLog],
         meal: list[MealLog],
         activity: list[ActivityLog],
     ):
@@ -428,7 +446,9 @@ class User:
     @food_logs.setter
     def food_logs(self, new_food_logs):
         """This is the setter for food logs. Partly AI-generated."""
-        self._food = _validate_log_list(new_food_logs, "Food logs")  # refactored by ai
+        self._food = _validate_log_list(
+            new_food_logs, FoodLog, "Food logs"
+        )  # refactored by ai
 
     @property
     def meal_logs(self):

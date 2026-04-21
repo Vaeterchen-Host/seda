@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 # Type example german food query.
 # Just for testing. Must be deleted.
-FOOD = "Rinderfilet"
+FOOD = "Cola"
 
 
 def show_message(message):
