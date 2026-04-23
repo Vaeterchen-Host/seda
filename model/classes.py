@@ -6,6 +6,7 @@
 
 from datetime import datetime
 from dataclasses import dataclass, fields
+import time
 from typing import Optional
 
 
@@ -399,6 +400,53 @@ class Meal:
 
 ## All classes for logging
 # Parent classes.
+class LogItem:
+    """This is the parent class for all log items."""
+
+    def __init__(self, log_id, timestamp=None):
+        """This is the constructor of LogItem."""
+        self._id = log_id
+        self._timestamp = timestamp
+        if self._timestamp is None:
+            self.create_timestamp()
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def log_id(self):
+        return self._id
+
+    @property
+    def timestamp(self):
+        return self._timestamp
+
+    id.setter
+
+    def id(self, new_id):
+        self._id = new_id
+
+    timestamp.setter
+
+    def timestamp(self, new_timestamp):
+        """This is the setter for timestamp. It checks format."""
+        if not isinstance(new_timestamp, datetime):
+            raise ValueError("Timestamp must be a datetime object.")
+        self._timestamp = new_timestamp
+
+    def create_timestamp(self):
+        """Method for creating a timestamp. It can be used when creating a new log item."""
+        self._timestamp = datetime.now()
+
+
+class LogHandler:
+    """This is the parent class for all log handlers."""
+
+    def __init__(self, user_id, LogItem: list[LogItem]):
+        """This is the constructor of LogHandler."""
+        self._user_id = user_id
+        self._logs = LogItem
 
 
 class MealLog:

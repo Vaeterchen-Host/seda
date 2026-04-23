@@ -20,11 +20,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 # Type example german food query.
 # Just for testing. Must be deleted.
-FOOD = "Pils"
+FOOD = "Olivenöl"
 
 FOOD_DISPLAY_SECTIONS = [  # ai-generated
     (
-        "Energy and Basic Values (per 100g)",
+        "Energy and Basic Values (per 100g/ml)",
         [
             ("Calories:", "kcal", "kcal"),
             ("Water:", "water", "g"),
@@ -33,7 +33,7 @@ FOOD_DISPLAY_SECTIONS = [  # ai-generated
         ],
     ),
     (
-        "Macronutrients (per 100g)",
+        "Macronutrients (per 100g/ml)",
         [
             ("Protein:", "protein", "g"),
             ("Fat:", "fat", "g"),
@@ -444,6 +444,7 @@ def example_query(food_name="Hafer"):
     print(f"German: {data['name_de']}")
     print(f"food_id: {data['food_id']}")
     print(f"BLS Code: {data['bls_code']}")
+    print(f"Unit type: {data['unit_type']}")
     print("=" * 60)
 
     for title, items in FOOD_DISPLAY_SECTIONS:

@@ -345,6 +345,7 @@ def test_food_database_custom_sql_query_returns_food_columns():
     assert "food_id" in column_names, "Expected food_id column in external foods table"
     assert "bls_code" in column_names, "Expected bls_code column in external foods table"
     assert "name_de" in column_names, "Expected name_de column in external foods table"
+    assert "unit_type" in column_names, "Expected unit_type column in external foods table"
 
 # food log related tests
 def test_food_log_table_creation(db):
