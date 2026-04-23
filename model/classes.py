@@ -5,11 +5,17 @@
 """Core domain classes for SEDA."""
 
 from datetime import datetime
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from typing import Optional
 
 
-# ai-generated content start: helper function for validating log lists.
+# Helper functions for dataclass initialization and log validation. ai-generated.
+def _zero_dataclass(cls):
+    """Create a zero-valued dataclass instance for nutrient objects."""
+    return cls(**{field.name: 0 for field in fields(cls)})
+
+
+# ai-generated content start: helper function for validating log lists. ai-generated.
 def _validate_log_list(logs, log_type, label):
     """Validate that logs is a list containing only the expected log type."""
     if not isinstance(logs, list) or not all(isinstance(log, log_type) for log in logs):
@@ -188,18 +194,21 @@ class Meal:
         self._items = items
 
     # Here are the meal related methods.
+
+    def calculate_calories(self):
+        """Method for calculating the calories of the meal."""
+        if not self._items:
+            return 0
+        total_calories = 0
+        for item in self._items:
+            factor = item.amount_in_gram / 100
+            total_calories += item.calories_per_100_units * factor
+        return total_calories
+
     def calculate_big_seven(self):
         """Method for calculating the nutrient summary of the meal."""
         if not self._items:
-            return BigSeven(
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-            )
+            return _zero_dataclass(BigSeven)
 
         total = {
             "calorie": 0,
@@ -234,12 +243,162 @@ class Meal:
             total["protein"],
         )
 
-    def add_meal_composition(self, meal_item):
+    def calculate_nutrient_summary(self):
+        """Method for calculating the nutrient summary of the meal."""
+        if not self._items:
+            return _zero_dataclass(NutrientSummary)
+        total = {
+            "water": 0,
+            "monounsaturated_fat": 0,
+            "polyunsaturated_fat": 0,
+            "omega_3": 0,
+            "omega_6": 0,
+            "starch": 0,
+            "alcohol": 0,
+            "sodium": 0,
+            "cholesterol": 0,
+            "potassium": 0,
+            "calcium": 0,
+            "magnesium": 0,
+            "phosphorus": 0,
+            "iron": 0,
+            "zinc": 0,
+            "iodine": 0,
+            "copper": 0,
+            "manganese": 0,
+            "fluoride": 0,
+            "chromium": 0,
+            "molybdenum": 0,
+            "vitamin_a_re": 0,
+            "vitamin_a_rae": 0,
+            "retinol": 0,
+            "beta_carotene": 0,
+            "vitamin_d": 0,
+            "vitamin_d2": 0,
+            "vitamin_d3": 0,
+            "vitamin_e": 0,
+            "alpha_tocopherol": 0,
+            "vitamin_k": 0,
+            "vitamin_k1": 0,
+            "vitamin_k2": 0,
+            "vitamin_b1": 0,
+            "vitamin_b2": 0,
+            "niacin": 0,
+            "niacin_equivalent": 0,
+            "pantothenic_acid": 0,
+            "vitamin_b6": 0,
+            "biotin": 0,
+            "folate_equivalent": 0,
+            "folate": 0,
+            "folic_acid": 0,
+            "vitamin_b12": 0,
+            "vitamin_c": 0,
+        }
+        for item in self._items:
+            factor = item.amount_in_gram / 100
+            nutrients = item.food.nutrient_summary
+            total["water"] += nutrients.water * factor
+            total["monounsaturated_fat"] += nutrients.monounsaturated_fat * factor
+            total["polyunsaturated_fat"] += nutrients.polyunsaturated_fat * factor
+            total["omega_3"] += nutrients.omega_3 * factor
+            total["omega_6"] += nutrients.omega_6 * factor
+            total["starch"] += nutrients.starch * factor
+            total["alcohol"] += nutrients.alcohol * factor
+            total["sodium"] += nutrients.sodium * factor
+            total["cholesterol"] += nutrients.cholesterol * factor
+            total["potassium"] += nutrients.potassium * factor
+            total["calcium"] += nutrients.calcium * factor
+            total["magnesium"] += nutrients.magnesium * factor
+            total["phosphorus"] += nutrients.phosphorus * factor
+            total["iron"] += nutrients.iron * factor
+            total["zinc"] += nutrients.zinc * factor
+            total["iodine"] += nutrients.iodine * factor
+            total["copper"] += nutrients.copper * factor
+            total["manganese"] += nutrients.manganese * factor
+            total["fluoride"] += nutrients.fluoride * factor
+            total["chromium"] += nutrients.chromium * factor
+            total["molybdenum"] += nutrients.molybdenum * factor
+            total["vitamin_a_re"] += nutrients.vitamin_a_re * factor
+            total["vitamin_a_rae"] += nutrients.vitamin_a_rae * factor
+            total["retinol"] += nutrients.retinol * factor
+            total["beta_carotene"] += nutrients.beta_carotene * factor
+            total["vitamin_d"] += nutrients.vitamin_d * factor
+            total["vitamin_d2"] += nutrients.vitamin_d2 * factor
+            total["vitamin_d3"] += nutrients.vitamin_d3 * factor
+            total["vitamin_e"] += nutrients.vitamin_e * factor
+            total["alpha_tocopherol"] += (
+                nutrients.alpha_tocopherol * factor  # noqa: E501, refactored by ai
+            )
+            total["vitamin_k"] += nutrients.vitamin_k * factor
+            total["vitamin_k1"] += nutrients.vitamin_k1 * factor
+            total["vitamin_k2"] += nutrients.vitamin_k2 * factor
+            total["vitamin_b1"] += nutrients.vitamin_b1 * factor
+            total["vitamin_b2"] += nutrients.vitamin_b2 * factor
+            total["niacin"] += nutrients.niacin * factor
+            total["niacin_equivalent"] += nutrients.niacin_equivalent * factor
+            total["pantothenic_acid"] += nutrients.pantothenic_acid * factor
+            total["vitamin_b6"] += nutrients.vitamin_b6 * factor
+            total["biotin"] += nutrients.biotin * factor
+            total["folate_equivalent"] += nutrients.folate_equivalent * factor
+            total["folate"] += nutrients.folate * factor
+            total["folic_acid"] += nutrients.folic_acid * factor
+            total["vitamin_b12"] += nutrients.vitamin_b12 * factor
+            total["vitamin_c"] += nutrients.vitamin_c * factor
+        return NutrientSummary(
+            total["water"],
+            total["monounsaturated_fat"],
+            total["polyunsaturated_fat"],
+            total["omega_3"],
+            total["omega_6"],
+            total["starch"],
+            total["alcohol"],
+            total["sodium"],
+            total["cholesterol"],
+            total["potassium"],
+            total["calcium"],
+            total["magnesium"],
+            total["phosphorus"],
+            total["iron"],
+            total["zinc"],
+            total["iodine"],
+            total["copper"],
+            total["manganese"],
+            total["fluoride"],
+            total["chromium"],
+            total["molybdenum"],
+            total["vitamin_a_re"],
+            total["vitamin_a_rae"],
+            total["retinol"],
+            total["beta_carotene"],
+            total["vitamin_d"],
+            total["vitamin_d2"],
+            total["vitamin_d3"],
+            total["vitamin_e"],
+            total["alpha_tocopherol"],
+            total["vitamin_k"],
+            total["vitamin_k1"],
+            total["vitamin_k2"],
+            total["vitamin_b1"],
+            total["vitamin_b2"],
+            total["niacin"],
+            total["niacin_equivalent"],
+            total["pantothenic_acid"],
+            total["vitamin_b6"],
+            total["biotin"],
+            total["folate_equivalent"],
+            total["folate"],
+            total["folic_acid"],
+            total["vitamin_b12"],
+            total["vitamin_c"],
+        )
+
+    def add_food_composition(self, food_item):
         """Method for adding a meal composition. (Later when DB exists)"""
-        self._items.append(meal_item)
+        self._items.append(food_item)
 
 
-# All classes for logging
+## All classes for logging
+# Parent classes.
 
 
 class MealLog:
@@ -268,13 +427,13 @@ class MealLog:
         meal_summary = self._meal.calculate_nutrient_summary()
         factor = self._amount_in_gram / 100
         return BigSeven(
-            meal_summary.fat * factor,
-            meal_summary.saturated_fat * factor,
-            meal_summary.carbohydrate * factor,
-            meal_summary.fibre * factor,
-            meal_summary.sugar * factor,
-            meal_summary.protein * factor,
-            meal_summary.salt * factor,
+            fat=meal_summary.fat * factor,
+            saturated_fat=meal_summary.saturated_fat * factor,
+            carbohydrate=meal_summary.carbohydrate * factor,
+            fibre=meal_summary.fibre * factor,
+            sugar=meal_summary.sugar * factor,
+            protein=meal_summary.protein * factor,
+            salt=meal_summary.salt * factor,
         )
 
 
