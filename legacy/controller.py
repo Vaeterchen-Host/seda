@@ -66,8 +66,8 @@ def main():
         water_logs = []
         for log in db.get_all_water_logs():  # pylint: disable=no-value-for-parameter
             water_log_instance = WaterLog(
-                log[0], log[2], log[3]
-            )  # Assuming log[0] is id, log[1] is amount_in_ml, log[2] is timestamp
+                log[0], log[1], log[2], log[3]
+            )  # Assuming log[0] is id, log[1] is user_id, log[2] is amount_in_ml, log[3] is timestamp. Refactored by ai.
             water_logs.append(water_log_instance)
         return water_logs
 
@@ -77,8 +77,8 @@ def main():
         weight_logs = []
         for log in db.get_all_weight_logs():  # pylint: disable=no-value-for-parameter
             weight_log_instance = WeightLog(
-                log[0], log[2], log[3]
-            )  # Assuming log[0] is id, log[1] is weight_in_kg, log[2] is timestamp
+                log[0], log[1], log[2], log[3]
+            )  # Assuming log[0] is id, log[1] is user_id, log[2] is weight_in_kg, log[3] is timestamp. Refactored by ai.
             weight_logs.append(weight_log_instance)
         return weight_logs
 
@@ -171,7 +171,6 @@ def main():
             return ui.cli_view.show_message(
                 "Log not found. Please enter a valid log ID."
             )
-        class_user.delete_water_log(water_log_id)  # pylint: disable=E1111
         db.delete_water_log(water_log_id)  # pylint: disable=no-value-for-parameter
         refresh_water_logs_from_db()
         ui.cli_view.show_message("\nWater log deleted successfully!\n")
@@ -204,8 +203,8 @@ def main():
             return ui.cli_view.show_message(
                 "Log not found. Please enter a valid log ID."
             )
-        class_user.delete_weight_log(weight_log_id)  # pylint: disable=E1111
         db.delete_weight_log(weight_log_id)  # pylint: disable=no-value-for-parameter
+        refresh_weight_logs_from_db()
         ui.cli_view.show_message("\nWeight log deleted successfully!\n")
         class_user.show_weight_logs()  # pylint: disable=E1111, disable=E1101
 

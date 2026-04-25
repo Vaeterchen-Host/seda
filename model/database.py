@@ -35,7 +35,7 @@ PRAGMA table_info(foods);
 
 
 class FoodDatabase:
-    """This class defines the Food_Database."""
+    """This class defines the Food_Database. Read-only!"""
 
     def __init__(self, db=FOOD_DB_PATH):
         """This is the constructor of the Food_Database."""

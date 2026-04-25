@@ -5,7 +5,7 @@
 """Main entry point for SEDA."""
 
 import sys
-import model.controller
+import legacy.controller
 from ui.ui import main, ft
 from ui.cli_view import show_welcome, show_license_long
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     if ux == "g":
         ft.app(target=main)
     elif ux == "c":
-        model.controller.main()
+        legacy.controller.main()
     elif ux == "l":
         show_license_long()
     else:
