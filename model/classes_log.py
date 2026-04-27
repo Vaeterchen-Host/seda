@@ -101,8 +101,8 @@ class LogHandler:
         if user_id is None:
             raise ValueError("User ID must not be None.")
         self._user_id = user_id
-        self._log_type = log_type  # refactored by ai
         self.logs = logitems
+        self._log_type = log_type  # refactored by ai
 
     @property
     def user_id(self):
@@ -282,6 +282,13 @@ class WeightLog(LogItem):  # refactored by ai
         if new_height is not None and (new_height <= 0 or new_height > 300):
             raise ValueError("Height must be between 0 and 300 cm.")
         self._height_in_cm = new_height
+
+    @property
+    def bmi(self):
+        """This is the getter for current-BMI."""
+        if self.height_in_cm is None or self.weight_in_kg is None:
+            return None
+        return round(self.weight_in_kg / (self.height_in_cm / 100) ** 2, 2)
 
 
 class WeightLogHandler(LogHandler):  # refactored by ai
