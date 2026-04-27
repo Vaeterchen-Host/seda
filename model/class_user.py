@@ -120,6 +120,26 @@ class User:
         self._fitness_lvl = new_fitness_lvl
 
     @property
+    def water_log_handler(self):
+        """This is the getter for the water log handler. Refactored by ai."""
+        return self._water_log_handler  # refactored by ai
+
+    @property
+    def weight_log_handler(self):
+        """This is the getter for the weight log handler. Refactored by ai."""
+        return self._weight_log_handler  # refactored by ai
+
+    @property
+    def meal_log_handler(self):
+        """This is the getter for the meal log handler. Refactored by ai."""
+        return self._meal_log_handler  # refactored by ai
+
+    @property
+    def activity_log_handler(self):
+        """This is the getter for the activity log handler. Refactored by ai."""
+        return self._activity_log_handler  # refactored by ai
+
+    @property
     def water_logs(self):
         """This is the getter for water logs."""
         return self._water_log_handler.logs  # refactored by ai
@@ -172,15 +192,6 @@ class User:
         if fitness_lvl is not None:
             self.fitness_lvl = fitness_lvl
 
-    # Here are the weight log related methods.
-    def add_weight_log(self, weight_in_kg, timestamp=None):
-        """Method for adding a weightlog."""
-        if timestamp is None:
-            timestamp = datetime.now().isoformat()
-        self._weight_log_handler.create_log(
-            None, weight_in_kg, timestamp, self.height_in_cm
-        )  # refactored by ai
-
     def calculate_bmi(self):
         """Method for calculating the BMI. Partly AI-generated."""
         if self.height_in_cm is None or not self.weight_logs:
@@ -189,15 +200,6 @@ class User:
         latest_weight = self.weight_logs[-1].weight_in_kg
         bmi = latest_weight / (height_in_m**2)
         return round(bmi, 2)
-
-    # Here are the water log related methods.
-    def add_water_log(self, amount_in_ml, timestamp=None):
-        """Method for adding a waterlog."""
-        if timestamp is None:
-            timestamp = datetime.now().isoformat()
-        self._water_log_handler.create_log(
-            None, amount_in_ml, timestamp
-        )  # refactored by ai
 
     def water_intake_today(self):
         """Method for calculating the total water intake of today. Partly AI-generated."""
@@ -208,33 +210,3 @@ class User:
             if datetime.fromisoformat(log.timestamp).date() == today
         )
         return total_intake
-
-    # Here are the meal log related methods.
-    def add_meal_log(self, meal_log_id, meal, amount_in_gram, timestamp=None):
-        """Method for adding a meallog."""
-        if timestamp is None:
-            timestamp = datetime.now().isoformat()
-        self._meal_log_handler.create_log(
-            meal_log_id, meal, amount_in_gram, timestamp
-        )  # refactored by ai
-
-    # Here are the activity log related methods.
-    def add_activity_log(
-        self,
-        activity_name,
-        calories_burned,
-        timestamp=None,
-        activity_value=None,
-        unit_type="minutes",
-    ):
-        """Method for adding an activity log."""
-        if timestamp is None:
-            timestamp = datetime.now().isoformat()
-        self._activity_log_handler.create_log(
-            None,
-            activity_name,
-            calories_burned,
-            timestamp,
-            activity_value,
-            unit_type,
-        )  # refactored by ai

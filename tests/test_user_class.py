@@ -56,7 +56,9 @@ def test_get_water_logs(test_user_class):
 
 def test_add_water_log(test_user_class):
     """This test checks if water logs are added correctly. Refactored by ai."""
-    test_user_class.add_water_log(500, "2026-03-22T08:00")
+    test_user_class.water_log_handler.create_log(
+        None, 500, "2026-03-22T08:00"
+    )  # refactored by ai
 
     assert len(test_user_class.water_logs) == 2
     assert test_user_class.water_logs[1].amount_in_ml == 500
@@ -74,7 +76,9 @@ def test_get_weight_logs(test_user_class):
 
 def test_add_weight_log(test_user_class):
     """This test checks if weight logs are added correctly. Refactored by ai."""
-    test_user_class.add_weight_log(79.8, "2026-03-22T08:00")
+    test_user_class.weight_log_handler.create_log(
+        None, 79.8, "2026-03-22T08:00", test_user_class.height_in_cm
+    )  # refactored by ai
 
     assert len(test_user_class.weight_logs) == 2
     assert test_user_class.weight_logs[1].weight_in_kg == 79.8
@@ -85,7 +89,9 @@ def test_add_weight_log(test_user_class):
 
 def test_add_activity_log(test_user_class):
     """This test checks if activity logs are added correctly. Refactored by ai."""
-    test_user_class.add_activity_log("walking", 120, "2026-03-22T08:00", 30, "minutes")
+    test_user_class.activity_log_handler.create_log(
+        None, "walking", 120, "2026-03-22T08:00", 30, "minutes"
+    )  # refactored by ai
 
     assert len(test_user_class.activity_logs) == 1
     assert test_user_class.activity_logs[0].activity_name == "walking"
