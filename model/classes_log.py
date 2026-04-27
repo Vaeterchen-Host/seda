@@ -30,10 +30,6 @@ VALID_UNIT_TYPES = {
     "minutes",  # Activity
 }
 
-VALID_ACTIVITY_UNIT_TYPES = {
-    "minutes",
-}  # refactored by ai
-
 
 class LogItem:
     """This is the parent class for all log items."""
@@ -376,10 +372,8 @@ class ActivityLog(LogItem):  # refactored by ai
     @LogItem.unit_type.setter
     def unit_type(self, new_unit_type):
         """This is the setter for activity unit_type. Refactored by ai."""
-        if new_unit_type not in VALID_ACTIVITY_UNIT_TYPES:
-            raise ValueError(
-                f"Activity unit type must be one of {VALID_ACTIVITY_UNIT_TYPES}."
-            )
+        if new_unit_type not in VALID_UNIT_TYPES:
+            raise ValueError(f"Activity unit type must be one of {VALID_UNIT_TYPES}.")
         self._unit_type = new_unit_type
 
 
