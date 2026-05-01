@@ -9,7 +9,7 @@ from dataclasses import fields
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-# pylint: disable=C0413, E1120, C0301
+# pylint: disable=E1120, C0301
 
 import ui.cli_view
 from model.class_user import User
