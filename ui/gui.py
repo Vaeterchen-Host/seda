@@ -2497,9 +2497,7 @@ class SedaGuiApp:
             self.t("license_title"),
             ft.Column(
                 [
-                    ft.Text(
-                        self.t("license_copy"), color=self.surface_muted_color()
-                    ),
+                    ft.Text(self.t("license_copy"), color=self.surface_muted_color()),
                     self.build_label_value_row(
                         self.t("license_name_label"),
                         self.t("license_name_value"),
@@ -2526,9 +2524,7 @@ class SedaGuiApp:
             ),
         )
 
-        return ft.Column(
-            [about_section, feature_section, license_section], spacing=20
-        )
+        return ft.Column([about_section, feature_section, license_section], spacing=20)
 
     # ---------------------------
     # Render logic
