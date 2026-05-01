@@ -1,10 +1,12 @@
 # Project Structure (AI-generated)
 
+> AI-updated for the current V0.5 project status.
+
 > This document describes the current workspace layout of the SEDA project.
 
 ## Quick Overview
 
-SEDA is currently a Python project with the following main areas:
+SEDA is currently a Python project with the following active main areas:
 
 - application logic in `model/`
 - user interfaces in `ui/`
@@ -12,7 +14,7 @@ SEDA is currently a Python project with the following main areas:
 - tests in `tests/`
 - documentation in `docs/`
 
-There are also utility files, older experiments, and some legacy code that are not part of the main runtime path.
+There are also utility files, older experiments, release subfolders, and some legacy code that are not part of the main runtime path.
 
 ## Project Folders
 
@@ -20,18 +22,21 @@ There are also utility files, older experiments, and some legacy code that are n
 This folder contains the core application logic.
 
 Important files:
-- `classes.py`: core domain classes such as `User`, `WaterLog`, `WeightLog`, `Food`, `Meal`, `MealItem`, and nutrient helper objects
+- `class_user.py`: central `User` class with age, water, BMI, and calorie-related calculations
+- `classes_log.py`: log classes and handlers for water, weight, meals, and activities
+- `classes_food.py`: domain classes for `Food`, `Meal`, `BigSeven`, and `NutrientSummary`
 - `database.py`: SQLite access, table creation, and database methods for users, water logs, weight logs, activity logs, food logs, meals, and meal items
-- `controller.py`: CLI controller that connects user input, logic, and persistence
-- `open_food_api.py`: experimental API access for Open Food Facts lookups by barcode or product name
+- `controller.py`: CLI controller that connects user input, logic, the external food DB, and persistence
+- `open_food_api.py`: experimental API access for Open Food Facts lookups by barcode or product name, currently not the main search path
 
 ### `ui/`
 This folder contains everything related to the user interface.
 
 Important files:
-- `ui.py`: graphical user interface built with Flet
+- `gui.py`: graphical user interface built with Flet
+- `gui copy.py`: older or parallel GUI working copy
 - `cli_view.py`: command-line input and output helpers
-- `theme_utils.py`: small helper functions for switching the Flet theme
+- `translations.py`: GUI translations for German and English
 
 ### `data/`
 This folder stores persistent project data.
@@ -44,7 +49,9 @@ Current content:
 This folder contains automated tests.
 
 Current content:
-- `test_classes.py`: tests for classes from `model/classes.py`
+- `test_user_class.py`: tests for the `User` class
+- `test_log_classes.py`: tests for log classes and handlers
+- `test_food_classes.py`: tests for `Food`, `Meal`, and nutrient-related behavior
 - `test_cli_view.py`: tests for CLI view behavior
 - `test_database.py`: tests for database behavior
 - `test.db`: an additional test database file
@@ -61,6 +68,8 @@ This folder contains project documentation.
 Current content:
 - `de_struktur.md`: German structure overview
 - `en_structur.md`: English structure overview
+- `v0.1/`: older exported diagrams from an earlier project phase
+- `v0.5/`: release folder reserved for the current version
 - several exported diagrams as `.png`
 - `Anforderungsanalyse Tabelle.ods`: supporting analysis document
 
@@ -69,10 +78,8 @@ This folder currently acts as a utility and staging area.
 
 Examples:
 - `paginator.py`: helper for paginated CLI output, currently used for long license text
-- `tobi_classes.py`: older or parallel class implementation used during development
-- `bine_cli_main.py`: alternative CLI controller prototype
 - `test_bine.py`: additional development-side database tests
-- `tobi_cli_controller`: executable Python script without `.py` suffix, apparently kept as another experimental controller variant
+- the folder currently contains mostly helper and experiment material, no central runtime module anymore
 
 This folder currently mixes helpers, prototypes, and development leftovers.
 
@@ -80,8 +87,32 @@ This folder currently mixes helpers, prototypes, and development leftovers.
 This folder stores older code that is no longer part of the main path, but is still kept for reference.
 
 Current content:
+- `bine_cli_main.py`
+- `cli_controller.py`
+- `theme_utils.py`
+- `tobi_classes.py`
 - `ui_german.py`
 - `ui_discardable.py`
+- `ui_v0.1.py`
+
+### `BLS_4_0_2025_DE/`
+This folder contains source material related to the external BLS food database.
+
+Current content:
+- Excel files and PDF documentation for the BLS source data
+- `bls_foods.sqlite`: another SQLite version of the food dataset
+- `import_bls_to_sqlite.py`: import helper for that dataset
+
+This folder appears to be data and import working material, not part of the normal application runtime path.
+
+### `Beispiele/`
+This folder contains learning, tutorial, and experiment files.
+
+Current content:
+- several small Python examples
+- `flet_tutorial/` with multiple Flet learning scripts
+
+This folder is not part of the actual application runtime path, but it makes sense in the repository context of a student project.
 
 ## Important Files in the Project Root
 
@@ -93,6 +124,7 @@ Current behavior:
 - can also show the license text
 - launches the Flet interface for `g`
 - launches the CLI controller for `c`
+- uses `ui.cli_view.show_welcome()` for the startup message
 - still contains an outdated error message that mentions `y/n/l`, even though the actual prompt uses `g/c/l`
 
 ### `config.py`
@@ -106,6 +138,9 @@ Current content includes:
 - `DB_TEST_PATH`
 - `DEVS`
 - `VERSION`
+
+Note:
+- `VERSION` is still set to `0.1.0` in code, even though the current release context you requested is V0.5.
 
 ### `data/bls_foods.sqlite`
 This database contains a large static food collection.
@@ -156,4 +191,4 @@ Important:
 - `utils/` should ideally contain only helper functions, or be split into clearer folders later.
 - `legacy/` is useful for old code, but should not be confused with active UI code.
 - older UI files in `legacy/` could later be cleaned up further or marked more clearly.
-- parts of the codebase already prepare food and meal tracking, but the currently visible runtime focus is still mainly user, water, and weight tracking.
+- food, meal, and activity tracking are now visibly part of the active runtime path, not only preparation work.

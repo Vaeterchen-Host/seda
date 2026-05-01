@@ -16,6 +16,7 @@ import flet as ft
 # Search path for model imports
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from config import DEVS, VERSION  # refactored by ai
 from model.class_user import User
 from model.classes_food import BigSeven, Food, Meal, NutrientSummary
 from model.classes_log import MealLog
@@ -1144,10 +1145,10 @@ class SedaGuiApp:
                         ft.Column(
                             [
                                 ft.Text(
-                                    f"{self.t('app_title')} v0.5",
+                                    f"{self.t('app_title')} v{VERSION}",
                                     size=12,
                                     color=self.surface_muted_color(),
-                                ),
+                                ),  # refactored by ai
                                 ft.Text(
                                     self.t("app_subtitle"),
                                     size=30,
@@ -2486,8 +2487,8 @@ class SedaGuiApp:
                     ),
                     self.build_label_value_row(
                         self.t("developers_label"),
-                        self.t("developers_value"),
-                    ),
+                        DEVS,
+                    ),  # refactored by ai
                 ],
                 spacing=10,
             ),
